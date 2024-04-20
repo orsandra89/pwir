@@ -1,6 +1,3 @@
-#include "Polynomial.cpp"
+#include "QuadraticPolynomial.h"
 
-class QuadraticPolynomial : public Polynomial {
-    public:
-        QuadraticPolynomial(int a, int b, int c) : Polynomial({c, b, a}) {}
-};
+QuadraticPolynomial::QuadraticPolynomial(double a, double b, double c) : Polynomial({c, b, a}) {}

@@ -1,13 +1,13 @@
-#include <vector>
+#include "Polynomial.h"
 
-class Polynomial {
-    private: 
-        std::vector<int> coefficients;
+Polynomial::Polynomial(std::vector<double> coeffs) : coefficients(coeffs) {}
 
-    public:
-        Polynomial(std::vector<int> coeffs) : coefficients(coeffs) {}
-        virtual ~Polynomial() = default;
-        std::vector<int> getCoefficients() {
-            return coefficients;
-        }
-};
+double Polynomial::evaluate(double x) const {
+    double result = 0.0;
+    double power_of_x = 1.0;
+    for (double coeff : coefficients) {
+        result += coeff * power_of_x;
+        power_of_x *= x;
+    }
+    return result;
+}
