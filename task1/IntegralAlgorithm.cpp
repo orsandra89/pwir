@@ -1,7 +1,7 @@
 #include "Polynomial.cpp"
 
-class IntegralAlgorythm {
+class IntegralAlgorithm {
     public: 
-        virtual ~IntegralAlgorythm() = default;
+        virtual ~IntegralAlgorithm() = default;
         virtual double integration(Polynomial f, int a, int b, int n);
 };
