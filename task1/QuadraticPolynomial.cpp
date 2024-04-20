@@ -1,4 +1,6 @@
-class QuadraticPolynomial{
+#include "Polynomial.cpp"
+
+class QuadraticPolynomial : public Polynomial {
     private:
         int quadraticCoefficient;
         int linearCoefficient;
