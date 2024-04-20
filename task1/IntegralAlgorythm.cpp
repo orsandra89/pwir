@@ -3,5 +3,5 @@
 class IntegralAlgorythm {
     public: 
         virtual ~IntegralAlgorythm() = default;
-        virtual double integration(Polynomial f, int a, int b);
+        virtual double integration(Polynomial f, int a, int b, int n);
 };
