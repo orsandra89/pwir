@@ -4,8 +4,8 @@ CFLAGS = -std=c++17 -Wunused-command-line-argument -Xpreprocessor -fopenmp -I/op
 
 # List of source files
 SRCS = polynomial/Polynomial.cpp polynomial/QuadraticPolynomial.cpp
-RECTANGLESRCS = rectangle/RectangleAlgorithm.cpp RectangleTest.cpp
-RECTANGLEMPSRCS = rectangle/RectangleAlgorithmOpenMP.cpp RectangleTestOpenMP.cpp
+RECTANGLESRCS = IntegralTest.cpp rectangle/RectangleAlgorithm.cpp rectangle/test/RectangleAlgorithmTest.cpp RectangleTest.cpp
+RECTANGLEMPSRCS = IntegralTest.cpp rectangle/RectangleAlgorithmOpenMP.cpp rectangle/test/RectangleAlgorithmOpenMPTest.cpp RectangleTestOpenMP.cpp
 TRAPEZOIDSRCS = IntegralTest.cpp trapezoid/TrapezoidAlgorithm.cpp trapezoid/test/TrapezoidAlgorithmTest.cpp TrapezoidTest.cpp
 TRAPEZOIDMPSRCS = IntegralTest.cpp trapezoid/TrapezoidAlgorithmOpenMP.cpp trapezoid/test/TrapezoidAlgorithmOpenMPTest.cpp TrapezoidTestOpenMP.cpp
 SIMPSONSRCS = IntegralTest.cpp simpson/SimpsonAlgorithm.cpp simpson/test/SimpsonAlgorithmTest.cpp SimpsonTest.cpp
