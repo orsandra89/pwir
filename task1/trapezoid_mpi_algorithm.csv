@@ -1,0 +1,13 @@
+Name,Time,Num_Intervals,Result
+TrapezoidAlgorithmMPI,0.0152676,1000000,0
+TrapezoidAlgorithmMPI,0.0241223,2000000,0
+TrapezoidAlgorithmMPI,0.0334637,3000000,0
+TrapezoidAlgorithmMPI,0.0444961,4000000,0
+TrapezoidAlgorithmMPI,0.0557083,5000000,0
+TrapezoidAlgorithmMPI,0.0669931,6000000,0
+TrapezoidAlgorithmMPI,0.0782573,7000000,0
+TrapezoidAlgorithmMPI,0.089426,8000000,0
+TrapezoidAlgorithmMPI,0.100461,9000000,0
+TrapezoidAlgorithmMPI,0.111569,10000000,0
+0,24635.8
+TrapezoidAlgorithmMPI,0.111569,10000000,22172.3
