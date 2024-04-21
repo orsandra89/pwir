@@ -1,0 +1,11 @@
+Name,Time,Num_Intervals
+TrapezoidAlgorithm,0.0699784,1000000
+TrapezoidAlgorithm,0.0828319,2000000
+TrapezoidAlgorithm,0.124602,3000000
+TrapezoidAlgorithm,0.167017,4000000
+TrapezoidAlgorithm,0.205148,5000000
+TrapezoidAlgorithm,0.247768,6000000
+TrapezoidAlgorithm,0.288727,7000000
+TrapezoidAlgorithm,0.33038,8000000
+TrapezoidAlgorithm,0.371749,9000000
+TrapezoidAlgorithm,0.415028,10000000

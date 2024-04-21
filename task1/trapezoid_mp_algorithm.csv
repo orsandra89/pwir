@@ -1,0 +1,11 @@
+Name,Time,Num_Intervals
+TrapezoidAlgorithmOpenMPTest,0.0237486,1000000
+TrapezoidAlgorithmOpenMPTest,0.0230082,2000000
+TrapezoidAlgorithmOpenMPTest,0.0287124,3000000
+TrapezoidAlgorithmOpenMPTest,0.0359416,4000000
+TrapezoidAlgorithmOpenMPTest,0.043256,5000000
+TrapezoidAlgorithmOpenMPTest,0.0530327,6000000
+TrapezoidAlgorithmOpenMPTest,0.0608333,7000000
+TrapezoidAlgorithmOpenMPTest,0.0766047,8000000
+TrapezoidAlgorithmOpenMPTest,0.0808519,9000000
+TrapezoidAlgorithmOpenMPTest,0.0935453,10000000

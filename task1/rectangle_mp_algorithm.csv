@@ -1,0 +1,11 @@
+Name,Time,Num_Intervals
+RectangleAlgorithmOpenMP,0.0185645,1000000
+RectangleAlgorithmOpenMP,0.0161856,2000000
+RectangleAlgorithmOpenMP,0.0196412,3000000
+RectangleAlgorithmOpenMP,0.0205246,4000000
+RectangleAlgorithmOpenMP,0.0286176,5000000
+RectangleAlgorithmOpenMP,0.031141,6000000
+RectangleAlgorithmOpenMP,0.0378034,7000000
+RectangleAlgorithmOpenMP,0.0428792,8000000
+RectangleAlgorithmOpenMP,0.046722,9000000
+RectangleAlgorithmOpenMP,0.0628698,10000000
