@@ -6,8 +6,8 @@ CFLAGS = -std=c++17 -Wunused-command-line-argument -Xpreprocessor -fopenmp -I/op
 SRCS = polynomial/Polynomial.cpp polynomial/QuadraticPolynomial.cpp
 RECTANGLESRCS = rectangle/RectangleAlgorithm.cpp RectangleTest.cpp
 RECTANGLEMPSRCS = rectangle/RectangleAlgorithmOpenMP.cpp RectangleTestOpenMP.cpp
-TRAPEZOIDSRCS = trapezoid/TrapezoidAlgorithm.cpp TrapezoidTest.cpp
-TRAPEZOIDMPSRCS = trapezoid/TrapezoidAlgorithmOpenMP.cpp TrapezoidTestOpenMP.cpp
+TRAPEZOIDSRCS = IntegralTest.cpp trapezoid/TrapezoidAlgorithm.cpp trapezoid/test/TrapezoidAlgorithmTest.cpp TrapezoidTest.cpp
+TRAPEZOIDMPSRCS = IntegralTest.cpp trapezoid/TrapezoidAlgorithmOpenMP.cpp trapezoid/test/TrapezoidAlgorithmOpenMPTest.cpp TrapezoidTestOpenMP.cpp
 SIMPSONSRCS = IntegralTest.cpp simpson/SimpsonAlgorithm.cpp simpson/test/SimpsonAlgorithmTest.cpp SimpsonTest.cpp
 SIMPSONMPSRCS = IntegralTest.cpp simpson/SimpsonAlgorithmOpenMP.cpp simpson/test/SimpsonAlgorithmOpenMPTest.cpp SimpsonTestOpenMP.cpp
 
