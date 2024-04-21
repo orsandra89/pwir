@@ -6,7 +6,7 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include "Polynomial.h"
+#include "polynomial/Polynomial.h"
 #include "IntegralAlgorithm.h"
 
 struct CsvRecord {

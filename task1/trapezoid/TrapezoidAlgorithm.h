@@ -1,7 +1,7 @@
 #ifndef TRAPEZOID_ALGORITHM_H
 #define TRAPEZOID_ALGORITHM_H
 
-#include "IntegralAlgorithm.h"
+#include "../IntegralAlgorithm.h"
 
 class TrapezoidAlgorithm : public IntegralAlgorithm {
 public:

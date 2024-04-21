@@ -3,12 +3,12 @@ CCMPI = mpicc
 CFLAGS = -std=c++17 -Wunused-command-line-argument -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include -L/opt/homebrew/opt/libomp/lib -lomp
 
 # List of source files
-SRCS = Polynomial.cpp QuadraticPolynomial.cpp
-RECTANGLESRCS = RectangleAlgorithm.cpp RectangleTest.cpp
-RECTANGLEMPSRCS = RectangleAlgorithmOpenMP.cpp RectangleTestOpenMP.cpp
-TRAPEZOIDSRCS = TrapezoidAlgorithm.cpp TrapezoidTest.cpp
-TRAPEZOIDMPSRCS = TrapezoidAlgorithmOpenMP.cpp TrapezoidTestOpenMP.cpp
-SIMPSONSRCS = IntegralTest.cpp SimpsonAlgorithm.cpp SimpsonAlgorithmTest.cpp SimpsonTest.cpp
+SRCS = polynomial/Polynomial.cpp polynomial/QuadraticPolynomial.cpp
+RECTANGLESRCS = rectangle/RectangleAlgorithm.cpp RectangleTest.cpp
+RECTANGLEMPSRCS = rectangle/RectangleAlgorithmOpenMP.cpp RectangleTestOpenMP.cpp
+TRAPEZOIDSRCS = trapezoid/TrapezoidAlgorithm.cpp TrapezoidTest.cpp
+TRAPEZOIDMPSRCS = trapezoid/TrapezoidAlgorithmOpenMP.cpp TrapezoidTestOpenMP.cpp
+SIMPSONSRCS = IntegralTest.cpp simpson/SimpsonAlgorithm.cpp simpson/test/SimpsonAlgorithmTest.cpp SimpsonTest.cpp
 SIMPSONMPSRCS = SimpsonAlgorithmOpenMP.cpp SimpsonTestOpenMP.cpp
 
 # List of object files

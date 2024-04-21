@@ -6,9 +6,9 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include "Polynomial.h"
-#include "IntegralTest.h"
-#include "SimpsonAlgorithm.h"
+#include "../../polynomial/Polynomial.h"
+#include "../../IntegralTest.h"
+#include "../SimpsonAlgorithm.h"
 
 class SimpsonAlgorithmTest : public IntegralTest {
     private:

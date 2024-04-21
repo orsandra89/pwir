@@ -2,7 +2,7 @@
 #define RECTANGLE_ALGORITHM_H
 
 #include <iostream>
-#include "IntegralAlgorithm.h"
+#include "../IntegralAlgorithm.h"
 
 class RectangleAlgorithm : public IntegralAlgorithm {
     public:

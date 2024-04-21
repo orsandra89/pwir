@@ -1,8 +1,8 @@
 #include <vector>
 #include <iostream>
-#include "QuadraticPolynomial.h"
+#include "polynomial/QuadraticPolynomial.h"
 #include "IntegralAlgorithm.h"
-#include "SimpsonAlgorithmTest.h"
+#include "simpson/test/SimpsonAlgorithmTest.h"
 
 int main() {
     // Example usage

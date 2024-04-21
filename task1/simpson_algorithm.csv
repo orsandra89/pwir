@@ -1,0 +1,11 @@
+Name,Time,Num_Intervals
+SimpsonAlgorithm,0.0468944,1000000
+SimpsonAlgorithm,0.0511146,2000000
+SimpsonAlgorithm,0.0644052,3000000
+SimpsonAlgorithm,0.0865952,4000000
+SimpsonAlgorithm,0.108825,5000000
+SimpsonAlgorithm,0.131031,6000000
+SimpsonAlgorithm,0.153038,7000000
+SimpsonAlgorithm,0.175378,8000000
+SimpsonAlgorithm,0.198991,9000000
+SimpsonAlgorithm,0.220001,10000000

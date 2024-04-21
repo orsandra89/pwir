@@ -1,7 +1,7 @@
 #ifndef TRAPEZOID_ALGORITHM_OPENMP_H
 #define TRAPEZOID_ALGORITHM_OPENMP_H
 
-#include "IntegralAlgorithm.h"
+#include "../IntegralAlgorithm.h"
 
 class TrapezoidAlgorithmOpenMP : public IntegralAlgorithm {
 public:

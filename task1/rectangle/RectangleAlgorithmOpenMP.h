@@ -1,7 +1,7 @@
 #ifndef RECTANGLE_ALGORITHM_OPENMP_H
 #define RECTANGLE_ALGORITHM_OPENMP_H
 
-#include "IntegralAlgorithm.h"
+#include "../IntegralAlgorithm.h"
 #include <omp.h>
 
 class RectangleAlgorithmOpenMP : public IntegralAlgorithm {

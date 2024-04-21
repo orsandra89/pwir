@@ -1,7 +1,7 @@
 #ifndef SIMPSON_ALGORITHM_MPI_H
 #define SIMPSON_ALGORITHM_MPI_H
 
-#include "IntegralAlgorithm.h"
+#include "../IntegralAlgorithm.h"
 #include <mpi.h>
 
 class SimpsonAlgorithmMPI : public IntegralAlgorithm {

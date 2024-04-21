@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
-#include "QuadraticPolynomial.h"
-#include "RectangleAlgorithm.h"
+#include "polynomial/QuadraticPolynomial.h"
+#include "rectangle/RectangleAlgorithm.h"
 
 int main() {
     // Example usage

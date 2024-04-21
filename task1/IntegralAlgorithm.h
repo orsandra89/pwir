@@ -1,7 +1,7 @@
 #ifndef INTEGRAL_ALGORITHM_H
 #define INTEGRAL_ALGORITHM_H
 
-#include "Polynomial.h"
+#include "polynomial/Polynomial.h"
 
 class IntegralAlgorithm {
     public:

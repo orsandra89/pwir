@@ -1,8 +1,7 @@
 #include <vector>
 #include <iostream>
-#include "QuadraticPolynomial.h"
-#include "IntegralAlgorithm.h"
-#include "TrapezoidAlgorithmOpenMP.h"
+#include "polynomial/QuadraticPolynomial.h"
+#include "trapezoid/TrapezoidAlgorithmOpenMP.h"
 
 int main() {
     // Example usage
