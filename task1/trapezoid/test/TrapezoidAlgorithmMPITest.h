@@ -19,7 +19,6 @@ class TrapezoidAlgorithmMPITest : public IntegralTest {
         std::string filename;
     public:
         TrapezoidAlgorithmMPITest(Polynomial* poly, double a, double b, std::string filename);
-        // Function to calculate time for one execution and return CsvRecord
         CsvRecord test(int num_intervals) override;
 };
 

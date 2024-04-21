@@ -7,7 +7,6 @@ double RectangleAlgorithmMPI::integration(Polynomial& poly, double a, double b, 
 
 
     double local_integral = 0.0;
-        // Calculate local interval for each process
     int local_num_intervals = n / size;
     double local_a = a + rank * (b - a) / size;
     double local_b = local_a + (b - a) / size;

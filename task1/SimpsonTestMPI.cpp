@@ -5,7 +5,6 @@
 #include "simpson/test/SimpsonAlgorithmMPITest.h"
 
 int main(int argc, char** argv) {
-    // Example usage
     MPI_Init(NULL, NULL);
     QuadraticPolynomial* poly = new QuadraticPolynomial(2, -3, 1);
 
@@ -16,11 +15,9 @@ int main(int argc, char** argv) {
 
     SimpsonAlgorithmMPITest ra = SimpsonAlgorithmMPITest(poly, a, b, "simpson_mpi_algorithm.csv");
 
-    // Calculate the integral using the rectangle method
     ra.execute(1000000, 10000000, 1000000);
     std::cout << "Finish calculation" << std::endl;
 
-    // delete poly;
     MPI_Finalize();
 
     return 0;

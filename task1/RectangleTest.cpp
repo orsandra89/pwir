@@ -5,8 +5,6 @@
 #include "rectangle/test/RectangleAlgorithmTest.h"
 
 int main() {
-    // Example usage
-    std::vector<int> coeffs = {1, -3, 2}; // Represents the polynomial x^2 - 3x + 2
     QuadraticPolynomial* poly = new QuadraticPolynomial(2, -3, 1);
 
     // Define the range [a, b] and the number of intervals
@@ -16,11 +14,8 @@ int main() {
 
     RectangleAlgorithmTest ra = RectangleAlgorithmTest(poly, a, b, "rectangle_algorithm.csv");
 
-    // Calculate the integral using the rectangle method
     ra.execute(1000000, 10000000, 1000000);
     std::cout << "Finish calculation" << std::endl;
-
-    // delete poly;
 
     return 0;
 }

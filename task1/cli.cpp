@@ -3,6 +3,7 @@
 #include <map>
 #include <cmath>
 #include "polynomial/Polynomial.h"
+#include "polynomial/QuadraticPolynomial.h"
 #include "IntegralAlgorithm.h"
 #include "simpson/SimpsonAlgorithm.h"
 #include "rectangle/RectangleAlgorithm.h"
@@ -53,7 +54,7 @@ int main() {
         // Check if the user wants to exit
         if (choice == 0) {
             std::cout << "Exiting the program." << std::endl;
-            break; // Exit the loop and end the program
+            break;
         }
 
         // Validate user choice
@@ -94,7 +95,7 @@ int main() {
         swapIfGreater(a, b); // Swap a and b if b < a
 
         // Create a Polynomial object with the given coefficients
-        Polynomial poly({C, B, A}); // Coefficients are given in the reverse order
+        QuadraticPolynomial poly(A, B, C);
 
         // Perform integration using the chosen algorithm
         double num_intervals = getDoubleInput("Enter number of intervals (n): ");
