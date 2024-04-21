@@ -1,0 +1,11 @@
+Name,Time,Num_Intervals
+SimpsonAlgorithmOpenMP,0.020195,1000000
+SimpsonAlgorithmOpenMP,0.0153796,2000000
+SimpsonAlgorithmOpenMP,0.0184065,3000000
+SimpsonAlgorithmOpenMP,0.0219045,4000000
+SimpsonAlgorithmOpenMP,0.0292008,5000000
+SimpsonAlgorithmOpenMP,0.0302626,6000000
+SimpsonAlgorithmOpenMP,0.0349742,7000000
+SimpsonAlgorithmOpenMP,0.0470732,8000000
+SimpsonAlgorithmOpenMP,0.0523949,9000000
+SimpsonAlgorithmOpenMP,0.0578883,10000000

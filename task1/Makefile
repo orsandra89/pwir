@@ -9,7 +9,7 @@ RECTANGLEMPSRCS = rectangle/RectangleAlgorithmOpenMP.cpp RectangleTestOpenMP.cpp
 TRAPEZOIDSRCS = trapezoid/TrapezoidAlgorithm.cpp TrapezoidTest.cpp
 TRAPEZOIDMPSRCS = trapezoid/TrapezoidAlgorithmOpenMP.cpp TrapezoidTestOpenMP.cpp
 SIMPSONSRCS = IntegralTest.cpp simpson/SimpsonAlgorithm.cpp simpson/test/SimpsonAlgorithmTest.cpp SimpsonTest.cpp
-SIMPSONMPSRCS = SimpsonAlgorithmOpenMP.cpp SimpsonTestOpenMP.cpp
+SIMPSONMPSRCS = IntegralTest.cpp simpson/SimpsonAlgorithmOpenMP.cpp simpson/test/SimpsonAlgorithmOpenMPTest.cpp SimpsonTestOpenMP.cpp
 
 # List of object files
 OBJS = $(SRCS:.cpp=.o)
