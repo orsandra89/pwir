@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "MacOpenMP",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/opt/homebrew/opt/libomp/lib"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        },
+        {
+            "name": "MacOpenMPI",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/opt/homebrew/Cellar/open-mpi/version/lib"
+            ],
+            "compilerPath": "/opt/homebrew/Cellar/open-mpi/version/bin/mpicc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
