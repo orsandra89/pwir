@@ -15,5 +15,5 @@ CsvRecord TrapezoidAlgorithmOpenMPTest::test(int num_intervals) {
 
     auto end = std::chrono::steady_clock::now();
     double elapsed_time = std::chrono::duration<double>(end - start).count();
-    return { "TrapezoidAlgorithmOpenMPTest", elapsed_time, num_intervals, result };
+    return { "TrapezoidAlgorithmOpenMP", elapsed_time, num_intervals, result };
 }

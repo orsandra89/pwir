@@ -21,7 +21,7 @@ double TrapezoidAlgorithmMPI::integration(Polynomial& poly, double a, double b, 
     MPI_Reduce(&local_sum, &total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        return total_sum * h / 3.0;
+        return total_sum;
     } else {
         return 0.0; // Non-root processes return 0
     }
