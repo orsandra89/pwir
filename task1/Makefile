@@ -1,5 +1,6 @@
 CC = clang++
-CCMPI = mpicc
+CCMPI = mpic++
+CCMPIFLAGS = -std=c++17 -Wunused-command-line-argument
 CFLAGS = -std=c++17 -Wunused-command-line-argument -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include -L/opt/homebrew/opt/libomp/lib -lomp
 
 # List of source files
@@ -10,6 +11,7 @@ TRAPEZOIDSRCS = IntegralTest.cpp trapezoid/TrapezoidAlgorithm.cpp trapezoid/test
 TRAPEZOIDMPSRCS = IntegralTest.cpp trapezoid/TrapezoidAlgorithmOpenMP.cpp trapezoid/test/TrapezoidAlgorithmOpenMPTest.cpp TrapezoidTestOpenMP.cpp
 SIMPSONSRCS = IntegralTest.cpp simpson/SimpsonAlgorithm.cpp simpson/test/SimpsonAlgorithmTest.cpp SimpsonTest.cpp
 SIMPSONMPSRCS = IntegralTest.cpp simpson/SimpsonAlgorithmOpenMP.cpp simpson/test/SimpsonAlgorithmOpenMPTest.cpp SimpsonTestOpenMP.cpp
+SIMPSONMPISRCS = $(SRCS) IntegralTest.cpp simpson/SimpsonAlgorithmMPI.cpp simpson/test/SimpsonAlgorithmMPITest.cpp SimpsonTestMPI.cpp
 
 # List of object files
 OBJS = $(SRCS:.cpp=.o)
@@ -27,8 +29,9 @@ TRAPEZOIDTARGET = trapezoid_test.out
 TRAPEZOIDMPTARGET = trapezoid_mp_test.out
 SIMPSONTARGET = simpson_test.out
 SIMPSONMPTARGET = simpson_mp_test.out
+SIMPSONMPITARGET = simpson_mpi_test.out
 
-all: $(RECTANGLETARGET) $(RECTANGLEMPTARGET) $(TRAPEZOIDTARGET) $(TRAPEZOIDMPTARGET) $(SIMPSONTARGET) $(SIMPSONMPTARGET)
+all: $(RECTANGLETARGET) $(RECTANGLEMPTARGET) $(TRAPEZOIDTARGET) $(TRAPEZOIDMPTARGET) $(SIMPSONTARGET) $(SIMPSONMPTARGET) $(SIMPSONMPITARGET)
 
 $(RECTANGLETARGET): $(RECTANGLEOBJS)
 	$(CC) $(CFLAGS) $(RECTANGLEOBJS) -o $(RECTANGLETARGET)
@@ -48,9 +51,12 @@ $(SIMPSONTARGET): $(SIMPSONOBJS)
 $(SIMPSONMPTARGET): $(SIMPSONMPOBJS)
 	$(CC) $(CFLAGS) $(SIMPSONMPOBJS) -o $(SIMPSONMPTARGET)
 
+$(SIMPSONMPITARGET): $(SIMPSONMPISRCS)
+	$(CCMPI) $(CCMPIFLAGS) $(SIMPSONMPISRCS) -o $(SIMPSONMPITARGET)
+
 # Rule for compiling source files into object files
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(RECTANGLEOBJS) $(RECTANGLEMPOBJS) $(TRAPEZOIDOBJS) $(TRAPEZOIDMPOBJS) $(SIMPSONOBJS) $(SIMPSONMPOBJS) $(RECTANGLETARGET) $(RECTANGLEMPTARGET) $(TRAPEZOIDTARGET) $(TRAPEZOIDMPTARGET) $(SIMPSONTARGET) $(SIMPSONMPTARGET)
+	rm -f $(RECTANGLEOBJS) $(RECTANGLEMPOBJS) $(TRAPEZOIDOBJS) $(TRAPEZOIDMPOBJS) $(SIMPSONOBJS) $(SIMPSONMPOBJS) $(RECTANGLETARGET) $(RECTANGLEMPTARGET) $(TRAPEZOIDTARGET) $(TRAPEZOIDMPTARGET) $(SIMPSONTARGET) $(SIMPSONMPTARGET) $(SIMPSONMPITARGET)

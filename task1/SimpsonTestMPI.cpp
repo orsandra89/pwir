@@ -1,23 +1,27 @@
 #include <vector>
 #include <iostream>
-#include "QuadraticPolynomial.h"
+#include "polynomial/QuadraticPolynomial.h"
 #include "IntegralAlgorithm.h"
-#include "SimpsonAlgorithmMPI.h"
+#include "simpson/test/SimpsonAlgorithmMPITest.h"
 
-int main() {
+int main(int argc, char** argv) {
     // Example usage
-    QuadraticPolynomial poly(2, -3, 1);
+    MPI_Init(NULL, NULL);
+    QuadraticPolynomial* poly = new QuadraticPolynomial(2, -3, 1);
 
     // Define the range [a, b] and the number of intervals
     double a = 0.0;
-    double b = 3.0;
-    int num_intervals = 1000;
+    double b = 1000.0;
+    int num_intervals = 1000000;
 
-    SimpsonAlgorithmMPI ra = SimpsonAlgorithmMPI();
+    SimpsonAlgorithmMPITest ra = SimpsonAlgorithmMPITest(poly, a, b, "simpson_mpi_algorithm.csv");
 
     // Calculate the integral using the rectangle method
-    double result = ra.integration(poly, a, b, num_intervals);
-    std::cout << "Integral of the polynomial over the range [" << a << ", " << b << "]: " << result << std::endl;
+    ra.execute(1000000, 10000000, 1000000);
+    std::cout << "Finish calculation" << std::endl;
+
+    // delete poly;
+    MPI_Finalize();
 
     return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef RECTANGLE_ALGORITHM_TEST_H
-#define RECTANGLE_ALGORITHM_TEST_H
+#ifndef SIMPSON_ALGORITHM_MPI_TEST_H
+#define SIMPSON_ALGORITHM_MPI_TEST_H
 
 #include <iostream>
 #include <fstream>
@@ -8,17 +8,17 @@
 #include <string>
 #include "../../polynomial/Polynomial.h"
 #include "../../IntegralTest.h"
-#include "../RectangleAlgorithm.h"
+#include "../SimpsonAlgorithmMPI.h"
 
-class RectangleAlgorithmTest : public IntegralTest {
+class SimpsonAlgorithmMPITest : public IntegralTest {
     private:
         Polynomial* poly;
-        RectangleAlgorithm algorithm;
+        SimpsonAlgorithmMPI algorithm;
         double a;
         double b;
         std::string filename;
     public:
-        RectangleAlgorithmTest(Polynomial* poly, double a, double b, std::string filename);
+        SimpsonAlgorithmMPITest(Polynomial* poly, double a, double b, std::string filename);
         // Function to calculate time for one execution and return CsvRecord
         CsvRecord test(int num_intervals) override;
 };

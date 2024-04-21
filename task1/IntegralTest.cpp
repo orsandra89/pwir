@@ -8,7 +8,7 @@ IntegralTest::~IntegralTest() {
 }
 
 CsvRecord IntegralTest::test(int num_intervals) {
-    return {"", 0.0, 0};
+    return {"", 0.0, 0, 0.0};
 }
 
 std::vector<CsvRecord> IntegralTest::performTests(int min_intervals, int max_intervals, int interval_step) {
@@ -25,9 +25,9 @@ void IntegralTest::writeToCsv(const std::vector<CsvRecord>& data, const std::str
         std::cerr << "Failed to open file: " << filename << std::endl;
         return;
     }
-    file << "Name,Time,Num_Intervals\n";
+    file << "Name,Time,Num_Intervals,Result\n";
     for (const auto& record : data) {
-        file << record.name << "," << record.time << "," << record.num_intervals << "\n";
+        file << record.name << "," << record.time << "," << record.num_intervals << "," << record.result << "\n";
     }
     file.close();
     std::cout << "Data written to " << filename << std::endl;

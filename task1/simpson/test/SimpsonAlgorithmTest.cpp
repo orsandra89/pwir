@@ -11,14 +11,10 @@ SimpsonAlgorithmTest::SimpsonAlgorithmTest(Polynomial* poly, double a, double b,
 CsvRecord SimpsonAlgorithmTest::test(int num_intervals) {
     auto start = std::chrono::steady_clock::now();
     
-    algorithm.integration(*poly, a, b, num_intervals);
+    double result = algorithm.integration(*poly, a, b, num_intervals);
 
     auto end = std::chrono::steady_clock::now();
     double elapsed_time = std::chrono::duration<double>(end - start).count();
-    return { "SimpsonAlgorithm", elapsed_time, num_intervals };
+    return { "SimpsonAlgorithm", elapsed_time, num_intervals, result };
 }
 
-// SimpsonAlgorithmTest::~SimpsonAlgorithmTest() {
-//     std::cout << "Delete SimpsonAlgorithmTest" << std::endl;
-//     delete poly;
-// }

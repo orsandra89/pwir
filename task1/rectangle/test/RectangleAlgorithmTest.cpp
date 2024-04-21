@@ -11,9 +11,9 @@ RectangleAlgorithmTest::RectangleAlgorithmTest(Polynomial* poly, double a, doubl
 CsvRecord RectangleAlgorithmTest::test(int num_intervals) {
     auto start = std::chrono::steady_clock::now();
     
-    algorithm.integration(*poly, a, b, num_intervals);
+    double result = algorithm.integration(*poly, a, b, num_intervals);
 
     auto end = std::chrono::steady_clock::now();
     double elapsed_time = std::chrono::duration<double>(end - start).count();
-    return { "RectangleAlgorithm", elapsed_time, num_intervals };
+    return { "RectangleAlgorithm", elapsed_time, num_intervals, result };
 }

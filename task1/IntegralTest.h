@@ -13,6 +13,7 @@ struct CsvRecord {
     std::string name;
     double time;
     int num_intervals;
+    double result;
 };
 
 class IntegralTest {

@@ -11,9 +11,9 @@ RectangleAlgorithmOpenMPTest::RectangleAlgorithmOpenMPTest(Polynomial* poly, dou
 CsvRecord RectangleAlgorithmOpenMPTest::test(int num_intervals) {
     auto start = std::chrono::steady_clock::now();
     
-    algorithm.integration(*poly, a, b, num_intervals);
+    double result = algorithm.integration(*poly, a, b, num_intervals);
 
     auto end = std::chrono::steady_clock::now();
     double elapsed_time = std::chrono::duration<double>(end - start).count();
-    return { "RectangleAlgorithmOpenMP", elapsed_time, num_intervals };
+    return { "RectangleAlgorithmOpenMP", elapsed_time, num_intervals, result };
 }
