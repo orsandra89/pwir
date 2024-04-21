@@ -9,6 +9,7 @@ class Polynomial {
 
     public:
         Polynomial(std::vector<double> coeffs);
+        ~Polynomial() = default;
         double evaluate(double x) const;
 };
 

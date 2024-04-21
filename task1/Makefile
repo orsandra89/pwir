@@ -1,4 +1,5 @@
 CC = clang++
+CCMPI = mpicc
 CFLAGS = -std=c++17 -Wunused-command-line-argument -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include -L/opt/homebrew/opt/libomp/lib -lomp
 
 # List of source files
@@ -7,7 +8,7 @@ RECTANGLESRCS = RectangleAlgorithm.cpp RectangleTest.cpp
 RECTANGLEMPSRCS = RectangleAlgorithmOpenMP.cpp RectangleTestOpenMP.cpp
 TRAPEZOIDSRCS = TrapezoidAlgorithm.cpp TrapezoidTest.cpp
 TRAPEZOIDMPSRCS = TrapezoidAlgorithmOpenMP.cpp TrapezoidTestOpenMP.cpp
-SIMPSONSRCS = SimpsonAlgorithm.cpp SimpsonTest.cpp
+SIMPSONSRCS = IntegralTest.cpp SimpsonAlgorithm.cpp SimpsonAlgorithmTest.cpp SimpsonTest.cpp
 SIMPSONMPSRCS = SimpsonAlgorithmOpenMP.cpp SimpsonTestOpenMP.cpp
 
 # List of object files
