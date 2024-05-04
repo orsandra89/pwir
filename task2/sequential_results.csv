@@ -1,0 +1,12 @@
+Name,Time,RowCount,ColumnCount,ThreadNum
+SequentialTest,0.580602,500,500,1
+SequentialTest,0.985378,600,600,1
+SequentialTest,1.56793,700,700,1
+SequentialTest,2.38098,800,800,1
+SequentialTest,3.55466,900,900,1
+SequentialTest,4.91176,1000,1000,1
+SequentialTest,6.26862,1100,1100,1
+SequentialTest,8.2361,1200,1200,1
+SequentialTest,10.4756,1300,1300,1
+SequentialTest,13.1892,1400,1400,1
+SequentialTest,16.7541,1500,1500,1
