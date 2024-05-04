@@ -1,20 +1,15 @@
 #include "Matrix.h"
 
-// Constructor
 Matrix::Matrix(int numRows, int numCols, double value) : rows(numRows), cols(numCols), data(numRows, std::vector<double>(numCols, value)) {}
 
 Matrix::Matrix(int numRows, int numCols) : rows(numRows), cols(numCols) {
-    // Resize the data vector to the specified number of rows
     data.resize(rows);
 
-    // Seed the random number generator
     srand(time(nullptr));
 
-    // Generate random values for each cell
     for (int i = 0; i < rows; ++i) {
         data[i].resize(cols);
         for (int j = 0; j < cols; ++j) {
-            // Generate a random value between 0 and 1
             data[i][j] = static_cast<double>(rand()) / RAND_MAX;
         }
     }
@@ -48,7 +43,6 @@ Matrix::Matrix(const std::string& filePath) {
     file.close();
 }
 
-// Method to set value at specific position
 void Matrix::setValue(int row, int col, double value) {
     if (row >= 0 && row < rows && col >= 0 && col < cols) {
         data[row][col] = value;
@@ -57,7 +51,6 @@ void Matrix::setValue(int row, int col, double value) {
     }
 }
 
-// Method to get value at specific position
 double Matrix::getValue(int row, int col) const {
     if (row >= 0 && row < rows && col >= 0 && col < cols) {
         return data[row][col];
@@ -74,7 +67,7 @@ int Matrix::getRowsCount() const {
 int Matrix::getColumnsCount() const {
     return cols;
 }
-// Method to print the matrix
+
 void Matrix::print() const {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -87,7 +80,7 @@ void Matrix::print() const {
 Matrix Matrix::operator*(const Matrix& other) const {
     if (cols != other.rows) {
         std::cerr << "Error: Matrix dimensions mismatch for multiplication" << std::endl;
-        return Matrix(0, 0); // Return an empty matrix
+        return Matrix(0, 0, 0); // Return an empty matrix
     }
 
     Matrix result(rows, other.cols, 0.0);
@@ -105,7 +98,7 @@ Matrix Matrix::operator*(const Matrix& other) const {
 Matrix Matrix::matrixMultiply(const Matrix& other, int numThread) const {
     if (cols != other.rows) {
         std::cerr << "Error: Matrix dimensions mismatch for multiplication" << std::endl;
-        return Matrix(0, 0); // Return an empty matrix
+        return Matrix(0, 0);
     }
 
     Matrix result(rows, other.cols, 0.0);
@@ -122,7 +115,6 @@ Matrix Matrix::matrixMultiply(const Matrix& other, int numThread) const {
 }
 
 void Matrix::writeToFile(const std::string& filePath) const {
-    // Open the file for writing
     std::ofstream outFile(filePath);
     
     if (!outFile.is_open()) {
@@ -134,18 +126,15 @@ void Matrix::writeToFile(const std::string& filePath) const {
     outFile << rows << "\n";
     outFile << cols << "\n";
 
-    // Write the matrix data
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             outFile << std::fixed << std::setprecision(6) << data[i][j];
-            // Use ";" as a separator between values
             if (j != cols - 1) {
                 outFile << ";";
             }
         }
-        outFile << "\n"; // Move to the next row
+        outFile << "\n";
     }
 
-    // Close the file
     outFile.close();
 }
