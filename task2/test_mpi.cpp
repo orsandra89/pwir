@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
         MPI_Gather(local_result.data(), rows * cols / size, MPI_DOUBLE, result.getData().data(), rows * cols / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
         // Save result to file
-        result.saveToFile(argv[3]);
+        result.writeToFile(argv[3]);
     } else {
         // Receive scattered data
         int rows, cols;
