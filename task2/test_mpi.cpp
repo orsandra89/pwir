@@ -1,7 +1,15 @@
 #include <iostream>
 #include <vector>
 #include <mpi.h>
-#include "Matrix.h" // Assuming you have Matrix class defined in Matrix.h
+#include "Matrix.h"
+
+std::vector<double> flatten(const std::vector<std::vector<double>>& matrix) {
+    std::vector<double> flattened;
+    for (const auto& row : matrix) {
+        flattened.insert(flattened.end(), row.begin(), row.end());
+    }
+    return flattened;
+}
 
 int main(int argc, char *argv[]) {
     MPI_Init(&argc, &argv);
@@ -27,8 +35,8 @@ int main(int argc, char *argv[]) {
         Matrix result(rows, cols, 0.0);
 
         // Scatter data to other processes
-        std::vector<double> mat1_data = mat1.getData().flatten();
-        std::vector<double> mat2_data = mat2.getData().flatten();
+        std::vector<double> mat1_data = flatten(mat1.getData());
+        std::vector<double> mat2_data = flatten(mat2.getData());
         MPI_Scatter(mat1_data.data(), rows * cols / size, MPI_DOUBLE, MPI_IN_PLACE, rows * cols / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         MPI_Scatter(mat2_data.data(), rows * cols / size, MPI_DOUBLE, MPI_IN_PLACE, rows * cols / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
