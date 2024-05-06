@@ -105,9 +105,12 @@ Matrix Matrix::matrixMultiply(const Matrix& other, int numThread) const {
     #pragma omp parallel for collapse(2) schedule(static) num_threads(numThread)
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < other.cols; ++j) {
+            double sum = 0.0;
+            #pragma omp parallel for reduction(+:sum)
             for (int k = 0; k < cols; ++k) {
-                result.data[i][j] += data[i][k] * other.data[k][j];
+                sum += data[i][k] * other.data[k][j];
             }
+            result.data[i][j] = sum;
         }
     }
 
