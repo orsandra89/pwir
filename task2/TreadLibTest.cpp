@@ -1,8 +1,8 @@
 #include "Matrix.cpp"
-#include "SequentialMatrixTest.h"
+#include "TreadLibMatrixTest.h"
 
 int main(int argc, char *argv[]) {
-    SequentialMatrixTest t("sequential_results.csv");
+    TreadLibMatrixTest t("threadlib_results.csv");
 
     t.execute(1000, 2, 10, 1);
 

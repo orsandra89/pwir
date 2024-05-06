@@ -1,5 +1,5 @@
-#ifndef MP_MATRIX_TEST_H
-#define MP_MATRIX_TEST_H
+#ifndef THREADLIB_MATRIX_TEST_H
+#define THREADLIB_MATRIX_TEST_H
 
 #include <iostream>
 #include <fstream>
@@ -9,12 +9,12 @@
 #include "Matrix.cpp"
 #include "MatrixTest.h"
 
-class MPMatrixTest : public MatrixTest {
+class TreadLibMatrixTest : public MatrixTest {
     private:
         std::string filename;
 
     public:
-        MPMatrixTest(std::string filename);
+        TreadLibMatrixTest(std::string filename);
         CsvRecord test(Matrix m1, Matrix m2, int threadNum) override;
 };
 

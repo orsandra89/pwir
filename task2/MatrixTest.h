@@ -24,13 +24,13 @@ class MatrixTest {
         MatrixTest(std::string filename);
         ~MatrixTest();
        
-        virtual CsvRecord test(Matrix m1, Matrix m2);
+        virtual CsvRecord test(Matrix m1, Matrix m2, int threadNum);
 
-        std::vector<CsvRecord> performTests(int min_intervals, int max_intervals, int interval_step);
+        std::vector<CsvRecord> performTests(int size, int min_intervals, int max_intervals, int interval_step);
 
         void writeToCsv(const std::vector<CsvRecord>& data, const std::string& filename);
 
-        void execute(int min_intervals, int max_intervals, int interval_step);
+        void execute(int size, int min_intervals, int max_intervals, int interval_step);
 };
 
 #endif

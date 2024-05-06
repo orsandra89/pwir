@@ -15,7 +15,7 @@ class SequentialMatrixTest : public MatrixTest {
 
     public:
         SequentialMatrixTest(std::string filename);
-        CsvRecord test(Matrix m1, Matrix m2) override;
+        CsvRecord test(Matrix m1, Matrix m2, int threadNum) override;
 };
 
 #endif

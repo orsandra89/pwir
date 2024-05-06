@@ -2,7 +2,7 @@
 
 SequentialMatrixTest::SequentialMatrixTest(std::string filename) : MatrixTest(filename) {}
 
-CsvRecord SequentialMatrixTest::test(Matrix m1, Matrix m2) {
+CsvRecord SequentialMatrixTest::test(Matrix m1, Matrix m2, int threadNum) {
     auto start = std::chrono::steady_clock::now();
     
     Matrix result = m1 * m2;
