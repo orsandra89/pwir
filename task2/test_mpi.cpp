@@ -22,13 +22,13 @@ int main(int argc, char *argv[]) {
         // Load matrices from files
         Matrix mat1(argv[1]);
         Matrix mat2(argv[2]);
-        int rows = mat1.getRows();
-        int cols = mat2.getCols();
-        Matrix result(rows, cols);
+        int rows = mat1.getRowsCount();
+        int cols = mat2.getColumnsCount();
+        Matrix result(rows, cols, 0.0);
 
         // Scatter data to other processes
-        std::vector<double> mat1_data = mat1.flatten();
-        std::vector<double> mat2_data = mat2.flatten();
+        std::vector<double> mat1_data = mat1.getData().flatten();
+        std::vector<double> mat2_data = mat2.getData().flatten();
         MPI_Scatter(mat1_data.data(), rows * cols / size, MPI_DOUBLE, MPI_IN_PLACE, rows * cols / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         MPI_Scatter(mat2_data.data(), rows * cols / size, MPI_DOUBLE, MPI_IN_PLACE, rows * cols / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 

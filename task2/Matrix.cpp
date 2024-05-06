@@ -60,6 +60,10 @@ double Matrix::getValue(int row, int col) const {
     }
 }
 
+std::vector<std::vector<double>> Matrix::getData() const {
+    return data;
+}
+
 int Matrix::getRowsCount() const {
     return rows;
 }

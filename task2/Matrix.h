@@ -26,6 +26,7 @@ public:
 
     int getRowsCount() const;
     int getColumnsCount() const;
+    std::vector<std::vector<double>> getData() const;
 
     void print() const;
 
