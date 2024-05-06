@@ -9,12 +9,12 @@
 #include "Matrix.cpp"
 #include "MatrixTest.h"
 
-class TreadLibMatrixTest : public MatrixTest {
+class ThreadLibMatrixTest : public MatrixTest {
     private:
         std::string filename;
 
     public:
-        TreadLibMatrixTest(std::string filename);
+        ThreadLibMatrixTest(std::string filename);
         CsvRecord test(Matrix m1, Matrix m2, int threadNum) override;
 };
 

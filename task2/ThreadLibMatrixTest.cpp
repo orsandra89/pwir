@@ -1,8 +1,8 @@
-#include "TreadLibMatrixTest.h"
+#include "ThreadLibMatrixTest.h"
 
-TreadLibMatrixTest::TreadLibMatrixTest(std::string filename) : MatrixTest(filename) {}
+ThreadLibMatrixTest::ThreadLibMatrixTest(std::string filename) : MatrixTest(filename) {}
 
-CsvRecord TreadLibMatrixTest::test(Matrix m1, Matrix m2, int threadNum) {
+CsvRecord ThreadLibMatrixTest::test(Matrix m1, Matrix m2, int threadNum) {
     auto start = std::chrono::steady_clock::now();
     
     Matrix result = m1.matrixMultiplyThreadLibrary(m2, threadNum);
