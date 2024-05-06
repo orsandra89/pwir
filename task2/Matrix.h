@@ -8,6 +8,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <thread>
 
 class Matrix {
 private:
@@ -30,6 +31,7 @@ public:
 
     Matrix operator*(const Matrix& other) const;
     Matrix matrixMultiply(const Matrix& other, int numThread) const;
+    Matrix matrixMultiplyThreadLibrary(const Matrix& other, int numThread) const;
 
     void writeToFile(const std::string& filePath) const;
 };

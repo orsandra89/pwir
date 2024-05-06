@@ -114,6 +114,46 @@ Matrix Matrix::matrixMultiply(const Matrix& other, int numThread) const {
     return result;
 }
 
+Matrix Matrix::matrixMultiplyThreadLibrary(const Matrix& other, int numThread) const {
+    if (cols != other.rows) {
+        std::cerr << "Error: Matrix dimensions mismatch for multiplication" << std::endl;
+        return Matrix(0, 0);
+    }
+
+    Matrix result(rows, other.cols, 0.0);
+
+    auto compute_cell = [&](int row, int col) {
+        double sum = 0;
+        for (int k = 0; k < cols; ++k) {
+            sum += data[row][k] * other.data[k][col];
+        }
+        result.data[row][col] = sum;
+    };
+
+    // Create threads and perform multiplication
+    std::vector<std::thread> threads;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < other.cols; ++j) {
+            if (threads.size() < numThread) {
+                threads.emplace_back(compute_cell, i, j);
+            } else {
+                for (auto& t : threads) {
+                    t.join();
+                }
+                threads.clear();
+                threads.emplace_back(compute_cell, i, j);
+            }
+        }
+    }
+
+    // Join remaining threads
+    for (auto& t : threads) {
+        t.join();
+    }
+
+    return result;
+}
+
 void Matrix::writeToFile(const std::string& filePath) const {
     std::ofstream outFile(filePath);
     
