@@ -6,7 +6,7 @@
 #include <vector>
 #include <chrono>
 #include <string>
-#include "Matrix.h"
+#include "Matrix.cpp"
 
 struct CsvRecord {
     std::string name;

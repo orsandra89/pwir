@@ -1,4 +1,4 @@
-#include "Matrix.h"
+#include "Matrix.cpp"
 #include "SequentialMatrixTest.h"
 
 int main(int argc, char *argv[]) {

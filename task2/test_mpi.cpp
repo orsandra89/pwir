@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <mpi.h>
-#include "Matrix.h"
+#include "Matrix.cpp"
 
 std::vector<double> flatten(const std::vector<std::vector<double>>& matrix) {
     std::vector<double> flattened;
