@@ -1,0 +1,176 @@
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:07:15
+execution time: 7.792e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:10:00
+execution time: 7.958e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:27:59
+execution time: 7.125e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:28:09
+execution time: 5.916e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:42:05
+execution time: 8.375e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:42:15
+execution time: 1.6959e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:43:30
+execution time: 1.0166e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:43:38
+execution time: 1.3875e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:48:19
+execution time: 1.1583e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:48:23
+execution time: 1.3459e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:50:54
+execution time: 1.0042e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:50:57
+execution time: 1.3375e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination
+execution date: 2024-05-12 22:53:56
+execution time: 9.291e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination with OpenMP
+execution date: 2024-05-12 22:57:09
+execution time: 0.00358633
+number of equations: 3
+full pivoting: true
+number of threads: 4
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination with OpenMP
+execution date: 2024-05-12 22:57:17
+execution time: 0.000620917
+number of equations: 3
+full pivoting: true
+number of threads: 4
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination with ThreadLib
+execution date: 2024-05-12 23:12:01
+execution time: 0.000122334
+number of equations: 3
+full pivoting: true
+number of threads: 4
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss Elimination with ThreadLib
+execution date: 2024-05-12 23:12:10
+execution time: 0.000248084
+number of equations: 3
+full pivoting: true
+number of threads: 4
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss-Jourdan Elimination
+execution date: 2024-05-12 23:48:24
+execution time: 1.0541e-05
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss-Jourdan Elimination
+execution date: 2024-05-12 23:50:27
+execution time: 8.667e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss-Jourdan Elimination
+execution date: 2024-05-12 23:58:23
+execution time: 6.125e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss-Jourdan Elimination
+execution date: 2024-05-13 00:24:47
+execution time: 6e-06
+number of equations: 3
+full pivoting: true
+number of threads: 1
+#### Log Record End ####
+#### Log Record ####
+algorithm: Gauss-Jourdan Elimination with OpenMP
+execution date: 2024-05-13 00:25:41
+execution time: 0.00156817
+number of equations: 3
+full pivoting: true
+number of threads: 4
+#### Log Record End ####

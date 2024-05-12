@@ -61,6 +61,37 @@ private:
         }
     }
 
+    void completePivot(int n, std::vector<std::vector<double>>* a, std::vector<double>* b, std::vector<int>* order, int j){
+        std::vector<std::vector<double>>& matrix_A = *a;
+        std::vector<double>& vector_b = *b;
+        std::vector<int>& vector_order = *order;
+
+        int   i,k,rowx;
+        double xfac, amax;
+
+        amax = (double) fabs(matrix_A[j][j]) ;
+        int max_row = j;
+        int max_col = j;
+        for (i=j+1; i<n; i++){   /* Find the row with largest pivot */
+            for (k = j; k < n; ++k) {
+                xfac = (double) fabs(matrix_A[i][k]);
+                if(xfac > amax) {amax = xfac; max_row=i; max_col=k;}
+            }
+        }
+
+        if(max_row != j || max_col != j) {  /* Row interchanges */
+            rowx = rowx+1;
+            std::swap(vector_b[j], vector_b[max_row]);
+            std::swap(vector_order[j], vector_order[max_col]);
+            for (k = 0; k < n; ++k) {
+                std::swap(matrix_A[j][k], matrix_A[max_row][k]);
+            }
+            for (i = 0; i < n; ++i) {
+                std::swap(matrix_A[i][j], matrix_A[i][max_col]);
+            }
+        }
+    }
+
     void backSubstitution(int N, std::vector<std::vector<double>>* A, std::vector<double>* b, std::vector<double>* x, int numThreads){
         std::vector<std::vector<double>>& matrix_A = *A;
         std::vector<double>& vector_b = *b;
@@ -278,13 +309,18 @@ public:
         outFile.close();
     }
 
-    std::vector<double> gauss_elimination() {
+    std::vector<double> gauss_elimination(bool complete_pivoting) {
         if (rows != cols - 1) {
             std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
             return std::vector<double> {0.0};
         }
 
         int N = data.size();
+
+        std::vector<int> order;
+        for (int i = 0; i < N; ++i) {
+            order.push_back(i);
+        }
         std::vector<std::vector<double>> A(N, std::vector<double>(N));
         std::vector<double> b(N);
         std::vector<double> x(N);
@@ -296,7 +332,11 @@ public:
 
         //Gaussian Elimination
         for (int j=0; j < N-1; j++){
-            partialPivot(N, &A, &b, j);
+            if (complete_pivoting) {
+                completePivot(N, &A, &b, &order, j);
+            } else {
+                partialPivot(N, &A, &b, j);
+            }
                 
             for (int k=j+1; k<N; k++){
                 m = A[k][j]/A[j][j];
@@ -310,16 +350,31 @@ public:
 
         backSubstitution(N, &A, &b, &x, 1);
 
-        return x;
+        if(complete_pivoting) {
+            std::vector<double> result(N);
+            int o = 0;
+            for(int item : order){
+                result[item] = x[o];
+                o++;
+            }
+            return result;
+        } else {
+            return x;
+        }
     }
 
-    std::vector<double> gauss_elimination_openmp(int numThreads) {
+    std::vector<double> gauss_elimination_openmp(int numThreads, bool complete_pivoting) {
         if (rows != cols - 1) {
             std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
             return std::vector<double> {0.0};
         }
 
         int N = data.size();
+
+        std::vector<int> order;
+        for (int i = 0; i < N; ++i) {
+            order.push_back(i);
+        }
         std::vector<std::vector<double>> A(N, std::vector<double>(N));
         std::vector<double> b(N);
         std::vector<double> x(N);
@@ -331,7 +386,11 @@ public:
 
         //Gaussian Elimination
         for (int j=0; j < N-1; j++){
-            partialPivot(N, &A, &b, j);
+            if (complete_pivoting) {
+                completePivot(N, &A, &b, &order, j);
+            } else {
+                partialPivot(N, &A, &b, j);
+            }
 
             #pragma omp parallel default(none) num_threads(numThreads) shared(N,A,b,j) private(i,k,m)
             #pragma omp for schedule(static)
@@ -348,16 +407,31 @@ public:
 
         backSubstitution(N, &A, &b, &x, numThreads);
 
-        return x;
+        if(complete_pivoting) {
+            std::vector<double> result(N);
+            int o = 0;
+            for(int item : order){
+                result[item] = x[o];
+                o++;
+            }
+            return result;
+        } else {
+            return x;
+        }
     }
 
-    std::vector<double> gauss_elimination_threadlib(int numThreads) {
+    std::vector<double> gauss_elimination_threadlib(int numThreads, bool complete_pivoting) {
         if (rows != cols - 1) {
             std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
             return std::vector<double> {0.0};
         }
 
         int N = data.size();
+
+        std::vector<int> order;
+        for (int i = 0; i < N; ++i) {
+            order.push_back(i);
+        }
         std::vector<std::vector<double>> A(N, std::vector<double>(N));
         std::vector<double> b(N);
         std::vector<double> x(N);
@@ -378,6 +452,12 @@ public:
             if ( param == NULL ) {
                 fprintf(stderr, "Couldn't allocate memory for thread.\n");
                 exit(EXIT_FAILURE);
+            }
+
+            if (complete_pivoting) {
+                completePivot(N, &A, &b, &order, norm);
+            } else {
+                partialPivot(N, &A, &b, norm);
             }
 
             int i, j;
@@ -401,7 +481,126 @@ public:
 
         backSubstitution(N, &A, &b, &x, numThreads);
 
-        return x;
+        if(complete_pivoting) {
+            std::vector<double> result(N);
+            int o = 0;
+            for(int item : order){
+                result[item] = x[o];
+                o++;
+            }
+            return result;
+        } else {
+            return x;
+        }
+    }
+
+    std::vector<double> gauss_jourdan_elimination(bool complete_pivoting) {
+        if (rows != cols - 1) {
+            std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
+            return std::vector<double> {0.0};
+        }
+
+        int N = data.size();
+
+        std::vector<std::vector<double>> A(N, std::vector<double>(N+1));
+
+        for (int i=0; i<N; i++){
+            for (int j=0; j<N+1; j++){
+                A[i][j] = data[i][j];
+            }
+        }
+
+        int i, k;
+        double m;
+
+        for (int i = 0; i < N; ++i) {
+            // Make the diagonal element non-zero
+            if (A[i][i] == 0) {
+                for (int k = i + 1; k < N; ++k) {
+                    if (A[k][i] != 0) {
+                        std::swap(A[i], A[k]);
+                        break;
+                    }
+                }
+            }
+
+            // Make the diagonal element 1
+            double factor = A[i][i];
+            for (int k = i; k < N + 1; ++k) {
+                A[i][k] /= factor;
+            }
+
+            // Eliminate elements above and below the diagonal
+            for (int j = 0; j < N; ++j) {
+                if (j != i) {
+                    factor = A[j][i];
+                    for (int k = i; k < N + 1; ++k) {
+                        A[j][k] -= factor * A[i][k];
+                    }
+                }
+            }
+        }
+
+        std::vector<double> result(N);
+        for(int i = 0; i < N; i++){
+            result[i] = A[i][N];
+        }
+        return result;
+    }
+
+    std::vector<double> gauss_jourdan_elimination_openmp(int num_threads, bool complete_pivoting) {
+        if (rows != cols - 1) {
+            std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
+            return std::vector<double> {0.0};
+        }
+
+        int N = data.size();
+
+        std::vector<std::vector<double>> A(N, std::vector<double>(N+1));
+
+        for (int i=0; i<N; i++){
+            for (int j=0; j<N+1; j++){
+                A[i][j] = data[i][j];
+            }
+        }
+
+        int i, k, j;
+        double m, temp;
+
+        for (int i = 0; i < N; ++i) {
+            // Make the diagonal element non-zero
+            if (A[i][i] == 0) {
+                for (int k = i + 1; k < N; ++k) {
+                    if (A[k][i] != 0) {
+                        std::swap(A[i], A[k]);
+                        break;
+                    }
+                }
+            }
+
+            #pragma omp parallel for num_threads(num_threads) private(temp,k,j) 
+            for(k=i+1; k < N; k++){
+                temp = A[k][i]/A[i][i];
+                for(j=i;j<=N;j++){
+                    A[k][j] = A[k][j] - ( temp * A[i][j]);
+                }			
+            }
+        }
+
+        for(k=N-1;k>0;k--){
+            #pragma omp parallel for num_threads(num_threads) private(i)	
+            for(i=0; i<k; i++){
+                A[i][N] = A[i][N] - ((A[i][k]/A[k][k]) * A[k][N]);
+                A[i][k] = 0;
+            }
+        }
+
+        std::vector<double> result(N);
+        #pragma omp parallel for num_threads(num_threads) private(i)
+        for(int i = 0; i < N; i++){
+            result[i] = A[i][N]/A[i][i];
+        }
+        return result;
     }
 
 };
