@@ -9,6 +9,16 @@
 #include <cstdlib>
 #include <ctime>
 #include <thread>
+#include <pthread.h>
+
+struct thread_param{
+    int norm;
+    int i;
+    int N;
+    std::vector<std::vector<double>>* A;
+    std::vector<double>* b;
+    int num_threads;
+};
 
 class Matrix {
 private:
@@ -64,6 +74,28 @@ private:
             }
             vector_x[i] = vector_x[i] / matrix_A[i][i];
         }
+    }
+
+    static void *inner_loop(void * param){
+        //int norm = *((int *) param);
+        struct thread_param* tparam = (struct thread_param*) param;
+        int N = tparam->N;
+        int num_threads = tparam->num_threads;
+        std::vector<std::vector<double>>& matrix_A = *tparam->A;
+        std::vector<double>& vector_b = *tparam->b;
+        int norm = tparam->norm;
+        int i = tparam->i;
+        //printf("thread = %d\n", norm);
+        float multiplier;
+        int row, col;
+        for (row = norm + i + 1; row < N; row = row + num_threads) {
+            multiplier = matrix_A[row][norm] / matrix_A[norm][norm];
+            for (col = norm; col < N; col++) {
+                matrix_A[row][col] -= matrix_A[norm][col] * multiplier;
+            }
+            vector_b[row] -= vector_b[norm] * multiplier;
+        }
+        pthread_exit(0);
     }
 
 
@@ -312,6 +344,59 @@ public:
                 b[k] = b[k] - (m * b[j]);
             }
 
+        }
+
+        backSubstitution(N, &A, &b, &x, numThreads);
+
+        return x;
+    }
+
+    std::vector<double> gauss_elimination_threadlib(int numThreads) {
+        if (rows != cols - 1) {
+            std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
+            return std::vector<double> {0.0};
+        }
+
+        int N = data.size();
+        std::vector<std::vector<double>> A(N, std::vector<double>(N));
+        std::vector<double> b(N);
+        std::vector<double> x(N);
+
+        fillMatrix(N, &A, &b); //Fill in matrix A and vector B with values from Matrix
+
+        int norm, row, col;  /* Normalization row, and zeroing
+			* element row and col */
+        double multiplier;
+
+        pthread_t thread[N];
+
+        printf("Computing Serially.\n");
+
+        /* Gaussian elimination */
+        for (norm = 0; norm < N - 1; norm++) {
+            struct thread_param* param = (thread_param*) malloc(numThreads * sizeof(struct thread_param));
+            if ( param == NULL ) {
+                fprintf(stderr, "Couldn't allocate memory for thread.\n");
+                exit(EXIT_FAILURE);
+            }
+
+            int i, j;
+
+            for(i = 0; i < numThreads; i++){
+                param[i].norm = norm;
+                param[i].i = i;
+                param[i].N = N;
+                param[i].num_threads = numThreads;
+                param[i].A = &A;
+                param[i].b = &b;
+                pthread_create(&thread[i], NULL, inner_loop, (void*) &param[i]);
+            }
+
+            for (j = 0; j < numThreads; j++) {
+                pthread_join(thread[j], NULL);
+            }
+
+            free(param);
         }
 
         backSubstitution(N, &A, &b, &x, numThreads);

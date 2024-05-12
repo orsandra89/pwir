@@ -101,16 +101,16 @@ int main(int argc, char *argv[]) {
 
         writeVectorToFile(resultFileName2, result);
     } else if (algorithm == 2) {
-        if (argc != 6) {
+        if (argc != 5) {
             std::cout << "Available integration algorithms:" << std::endl;
             for (const auto& pair : algorithmMap) {
                 std::cout << pair.first << ". " << pair.second << std::endl;
             }
-            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <matrix2_filename> <algorithm> <result_filename> <thread_num>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <thread_num>" << std::endl;
             return 1;
         }
 
-        int numThread = std::stoi(argv[5]);
+        int numThread = std::stoi(argv[4]);
 
         Matrix mat1(fileName1);
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 
         auto start = std::chrono::steady_clock::now();
         
-        std::vector<double> result = mat1.gauss_elimination();
+        std::vector<double> result = mat1.gauss_elimination_threadlib(numThread);
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = std::chrono::duration<double>(end - start).count();
