@@ -198,7 +198,7 @@ public:
     std::vector<double> gauss_elimination() {
         if (rows != cols - 1) {
             std::cerr << "Error: Matrix dimensions mismatch for Gauss elimination" << std::endl;
-            return;
+            return std::vector<double> {0.0};
         }
 
         int n = rows;
@@ -208,17 +208,17 @@ public:
             // Partial pivoting
             int max_row = i;
             for (int j = i + 1; j < n; ++j) {
-                if (abs(matrix[j][i]) > abs(matrix[max_row][i])) {
+                if (std::abs(data[j][i]) > std::abs(data[max_row][i])) {
                     max_row = j;
                 }
             }
-            swap(matrix[i], matrix[max_row]);
+            std::swap(data[i], data[max_row]);
 
             // Make all rows below this one 0 in the current column
             for (int j = i + 1; j < n; ++j) {
-                double factor = matrix[j][i] / matrix[i][i];
+                double factor = data[j][i] / data[i][i];
                 for (int k = i; k <= n; ++k) {
-                    matrix[j][k] -= factor * matrix[i][k];
+                    data[j][k] -= factor * data[i][k];
                 }
             }
         }
@@ -226,9 +226,9 @@ public:
         // Back Substitution
         std::vector<double> x(n);
         for (int i = n - 1; i >= 0; --i) {
-            x[i] = matrix[i][n] / matrix[i][i];
+            x[i] = data[i][n] / data[i][i];
             for (int k = i - 1; k >= 0; --k) {
-                matrix[k][n] -= matrix[k][i] * x[i];
+                data[k][n] -= data[k][i] * x[i];
             }
         }
         return x;

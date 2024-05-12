@@ -2,6 +2,26 @@
 #include <map>
 #include <cmath>
 
+void writeVectorToFile(const std::string& filePath, const std::vector<double> result) {
+        std::ofstream outFile(filePath);
+        
+        if (!outFile.is_open()) {
+            std::cerr << "Error: Unable to open file for writing: " << filePath << std::endl;
+            return;
+        }
+
+        outFile << result.size() << "\n";
+
+        for (int i = 0; i < result.size(); ++i) {
+            outFile << std::fixed << std::setprecision(6) << result[i];
+            if (i != result.size() - 1) {
+                outFile << ";";
+            }
+        }
+
+        outFile.close();
+    }
+
 int main(int argc, char *argv[]) {
     std::map<int, std::string> algorithmMap = {
         {0, "GaussSequential"},
@@ -45,7 +65,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "Calculation time: " << elapsed_time << std::endl;
 
-        // result.writeToFile(resultFileName2);
+        writeVectorToFile(resultFileName2, result);
     } else if (algorithm == 1) {
         if (argc != 5) {
             std::cout << "Available integration algorithms:" << std::endl;
@@ -79,7 +99,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "Calculation time: " << elapsed_time << std::endl;
 
-        // result.writeToFile(resultFileName2);
+        writeVectorToFile(resultFileName2, result);
     } else if (algorithm == 2) {
         if (argc != 6) {
             std::cout << "Available integration algorithms:" << std::endl;
@@ -113,7 +133,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "Calculation time: " << elapsed_time << std::endl;
 
-        // result.writeToFile(resultFileName2);
+        writeVectorToFile(resultFileName2, result);
     } else {
         std::cout << "Available integration algorithms:" << std::endl;
             for (const auto& pair : algorithmMap) {
