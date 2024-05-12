@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
         auto start = std::chrono::steady_clock::now();
         
-        std::vector<double> result = mat1.gauss_elimination();
+        std::vector<double> result = mat1.gauss_elimination_openmp(numThread);
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = std::chrono::duration<double>(end - start).count();
