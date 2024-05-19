@@ -27,11 +27,55 @@ void swapIfGreater(double& a, double& b) {
     }
 }
 
-int main() {
+struct ThreadData {
+    Polynomial poly;
+    double start;
+    double end;
+    int steps;
+    double result;
+};
+
+void* integrate(void* arg) {
+    ThreadData* data = (ThreadData*)arg;
+    Polynomial poly = data->poly;
+    double step = (data->end - data->start) / data->steps;
+    double sum = 0.0;
+    for (int i = 0; i < data->steps; ++i) {
+        double x = data->start + (i + 0.5) * step;
+        sum += poly.evaluate(x) * step;
+    }
+    data->result = sum;
+    return nullptr;
+}
+
+double rectangle_thread_lib(Polynomial p, double start, double end, int steps, int num_threads) {
+    std::vector<pthread_t> threads(num_threads);
+    std::vector<ThreadData> threadData(num_threads);
+
+    double segment = (end - start) / num_threads;
+
+    for (int i = 0; i < num_threads; ++i) {
+        threadData[i].poly = p;
+        threadData[i].start = start + i * segment;
+        threadData[i].end = start + (i + 1) * segment;
+        threadData[i].steps = steps / num_threads;
+        pthread_create(&threads[i], nullptr, integrate, &threadData[i]);
+    }
+
+    double total_integral = 0.0;
+    for(int i = 0; i < num_threads; i++) {
+        pthread_join(threads[i], nullptr);
+        total_integral += threadData[i].result;
+    }
+
+    return total_integral;
+}
+
+int main(int argc, char *argv[]) {
     // Mapping of integers to algorithm names
     std::map<int, std::string> algorithmMap = {
-        {0, "Exit"},
-        {1, "Rectangle"},
+        {0, "Rectangle"},
+        {1, "RectangleThreadLib"},
         {2, "RectangleOpenMP"},
         {3, "Trapezoid"},
         {4, "TrapezoidOpenMP"},
@@ -39,73 +83,144 @@ int main() {
         {6, "SimpsonOpenMP"}
     };
 
-    while (true) {
-        // Display available algorithms
+    if (argc < 8) {
+        std::cout << "Available integration algorithms:" << std::endl;
+        for (const auto& pair : algorithmMap) {
+            std::cout << pair.first << ". " << pair.second << std::endl;
+        }
+        std::cerr << "Usage: " << argv[0] << " <A> <B> <C> <a> <b> <n> <algorithm> <thread_num>" << std::endl;
+        return 1;
+    }
+
+    double A = std::stod(argv[1]);
+    double B = std::stod(argv[2]);
+    double C = std::stod(argv[3]);
+    double a = std::stod(argv[4]);
+    double b = std::stod(argv[5]);
+    int n = std::stoi(argv[6]);
+    int choice = std::stoi(argv[7]);
+
+    QuadraticPolynomial poly(A, B, C);
+
+    auto it = algorithmMap.find(choice);
+    if (it == algorithmMap.end()) {
+        std::cerr << "Invalid algorithm choice. Please try again." << std::endl;
+        return 0;
+    }
+
+    std::string algorithm = it->second;
+
+    IntegralAlgorithm* integrationAlgorithm;
+    if (algorithm == "Simpson") {
+        integrationAlgorithm = new SimpsonAlgorithm();
+
+        auto start = std::chrono::steady_clock::now();
+
+        double integral = integrationAlgorithm->integration(poly, a, b, n);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+    } else if (algorithm == "Rectangle") {
+        integrationAlgorithm = new RectangleAlgorithm();
+
+        auto start = std::chrono::steady_clock::now();
+
+        double integral = integrationAlgorithm->integration(poly, a, b, n);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+    } else if (algorithm == "Trapezoid") {
+        integrationAlgorithm = new TrapezoidAlgorithm();
+
+        auto start = std::chrono::steady_clock::now();
+
+        double integral = integrationAlgorithm->integration(poly, a, b, n);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+    } else if (algorithm == "SimpsonOpenMP") {
+        integrationAlgorithm = new SimpsonAlgorithmOpenMP();
+
+        auto start = std::chrono::steady_clock::now();
+
+        double integral = integrationAlgorithm->integration(poly, a, b, n);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+    } else if (algorithm == "RectangleOpenMP") {
+        integrationAlgorithm = new RectangleAlgorithmOpenMP();
+
+        auto start = std::chrono::steady_clock::now();
+
+        double integral = integrationAlgorithm->integration(poly, a, b, n);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+    } else if (algorithm == "TrapezoidOpenMP") {
+        integrationAlgorithm = new TrapezoidAlgorithmOpenMP();
+
+        auto start = std::chrono::steady_clock::now();
+
+        double integral = integrationAlgorithm->integration(poly, a, b, n);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+
+    delete integrationAlgorithm;
+    } else if (algorithm == "RectangleThreadLib") {
+        if (argc != 9) {
+            std::cout << "Available integration algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <A> <B> <C> <a> <b> <n> <algorithm> <thread_num>" << std::endl;
+            return 1;
+        }
+        int num_threads = std::stoi(argv[8]);
+
+        auto start = std::chrono::steady_clock::now();
+        
+        double integral = rectangle_thread_lib(poly, a, b, n, num_threads);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result of integration: " << integral << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+    } else {
+        std::cerr << "Invalid algorithm choice." << std::endl;
+
         std::cout << "Available integration algorithms:" << std::endl;
         for (const auto& pair : algorithmMap) {
             std::cout << pair.first << ". " << pair.second << std::endl;
         }
 
-        // Prompt the user to choose an integration algorithm
-        int choice;
-        std::cout << "Choose an integration algorithm (enter the corresponding number, 0 to exit): ";
-        std::cin >> choice;
-
-        // Check if the user wants to exit
-        if (choice == 0) {
-            std::cout << "Exiting the program." << std::endl;
-            break;
-        }
-
-        // Validate user choice
-        auto it = algorithmMap.find(choice);
-        if (it == algorithmMap.end()) {
-            std::cerr << "Invalid algorithm choice. Please try again." << std::endl;
-            continue; // Ask the user to choose again
-        }
-        std::string algorithm = it->second;
-
-        // Create an instance of the chosen algorithm
-        IntegralAlgorithm* integrationAlgorithm;
-        if (algorithm == "Simpson") {
-            integrationAlgorithm = new SimpsonAlgorithm();
-        } else if (algorithm == "Rectangle") {
-            integrationAlgorithm = new RectangleAlgorithm();
-        } else if (algorithm == "Trapezoid") {
-            integrationAlgorithm = new TrapezoidAlgorithm();
-        } else if (algorithm == "SimpsonOpenMP") {
-            integrationAlgorithm = new SimpsonAlgorithmOpenMP();
-        } else if (algorithm == "RectangleOpenMP") {
-            integrationAlgorithm = new RectangleAlgorithmOpenMP();
-        } else if (algorithm == "TrapezoidOpenMP") {
-            integrationAlgorithm = new TrapezoidAlgorithmOpenMP();
-        } else {
-            std::cerr << "Invalid algorithm choice. Please try again." << std::endl;
-            continue; // Ask the user to choose again
-        }
-
-        // Get coefficients of the quadratic polynomial
-        double A = getDoubleInput("Enter coefficient A: ");
-        double B = getDoubleInput("Enter coefficient B: ");
-        double C = getDoubleInput("Enter coefficient C: ");
-
-        // Get interval [a, b]
-        double a = getDoubleInput("Enter interval start (a): ");
-        double b = getDoubleInput("Enter interval end (b): ");
-        swapIfGreater(a, b); // Swap a and b if b < a
-
-        // Create a Polynomial object with the given coefficients
-        QuadraticPolynomial poly(A, B, C);
-
-        // Perform integration using the chosen algorithm
-        double num_intervals = getDoubleInput("Enter number of intervals (n): ");
-        double integral = integrationAlgorithm->integration(poly, a, b, num_intervals);
-
-        // Output the result
-        std::cout << "Result of integration: " << integral << std::endl;
-
-        // Clean up
-        delete integrationAlgorithm;
+        return 0;
     }
 
     return 0;
