@@ -20,6 +20,15 @@ struct thread_param{
     int num_threads;
 };
 
+struct ThreadData {
+    std::vector<std::vector<double>>* matrix;
+    int pivot_row;
+    int start_row;
+    int end_row;
+    int col;
+    int m;
+};
+
 class Matrix {
 private:
     int rows;
@@ -127,6 +136,27 @@ private:
             vector_b[row] -= vector_b[norm] * multiplier;
         }
         pthread_exit(0);
+    }
+
+    static void* rowOperation(void* arg) {
+        ThreadData* data = (ThreadData*)arg;
+        auto& matrix = *(data->matrix);
+        int pivot_row = data->pivot_row;
+        int start_row = data->start_row;
+        int end_row = data->end_row;
+        int col = data->col;
+        int m = data->m;
+        
+        for (int target_row = start_row; target_row <= end_row; ++target_row) {
+            if (target_row != pivot_row) {
+                double factor = matrix[target_row][col] / matrix[pivot_row][col];
+                for (int j = 0; j < m; ++j) {
+                    matrix[target_row][j] -= factor * matrix[pivot_row][j];
+                }
+            }
+        }
+        
+        pthread_exit(NULL);
     }
 
 
@@ -599,6 +629,57 @@ public:
         #pragma omp parallel for num_threads(num_threads) private(i)
         for(int i = 0; i < N; i++){
             result[i] = A[i][N]/A[i][i];
+        }
+        return result;
+    }
+
+    std::vector<double> gauss_jordan_elimination_threadlib(int num_threads) {
+        int n = data.size();
+
+        std::vector<std::vector<double>> A(n, std::vector<double>(n+1));
+
+        for (int i=0; i<n; i++){
+            for (int j=0; j<n+1; j++){
+                A[i][j] = data[i][j];
+            }
+        }
+
+        for (int col = 0; col < n; ++col) {
+            // Make the diagonal element 1
+            double diag = A[col][col];
+            for (int j = 0; j < n+1; ++j) {
+                A[col][j] /= diag;
+            }
+
+            // Create threads to perform row operations
+            std::vector<pthread_t> threads(num_threads);
+            std::vector<ThreadData> threadData(num_threads);
+
+            int rows_per_thread = n / num_threads;
+            int extra_rows = n % num_threads;
+
+            int start_row = 0;
+            for (int i = 0; i < num_threads; ++i) {
+                int end_row = start_row + rows_per_thread - 1;
+                if (i < extra_rows) {
+                    end_row += 1;
+                }
+
+                threadData[i] = {&A, col, start_row, end_row, col, n+1};
+                pthread_create(&threads[i], NULL, rowOperation, (void*) &threadData[i]);
+
+                start_row = end_row + 1;
+            }
+
+            // Join the threads
+            for (int i = 0; i < num_threads; ++i) {
+                pthread_join(threads[i], NULL);
+            }
+        }
+
+        std::vector<double> result(n);
+        for(int i = 0; i < n; i++){
+            result[i] = A[i][n];
         }
         return result;
     }

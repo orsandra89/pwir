@@ -87,7 +87,8 @@ int main(int argc, char *argv[]) {
         {1, "GaussOpenMP"},
         {2, "GaussThreadLibrary"},
         {3, "GaussJourdanSequential"},
-        {4, "GaussJourdanOpenMP"}
+        {4, "GaussJourdanOpenMP"},
+        {5, "GaussJourdanThreadLibrary"}
     };
 
     time_t now = time(0);
@@ -341,6 +342,56 @@ int main(int argc, char *argv[]) {
 
         if (log) {
             record.algorithm = "Gauss-Jourdan Elimination with OpenMP";
+            record.execution_date = date_str; // Example date, should be formatted according to your requirements
+            record.execution_time = elapsed_time; // Example execution time
+            record.N = mat1.getRowsCount(); // Example number of equations
+            record.full_pivoting = true; // Example full pivoting flag
+            record.num_threads = numThread; // Example number of threads
+
+            writeLogRecordToFile(record, logfile);
+        }
+    } else if (algorithm == 5) {
+        if (argc == 7) {
+            log = true;
+            logfile = argv[6];
+        } else if (argc == 6) {
+            log = false;
+        } else {
+            std::cout << "Available integration algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num>" << std::endl;
+            return 1;
+        }
+
+        int numThread = std::stoi(argv[5]);
+
+        Matrix mat1(fileName1);
+
+        std::cout << "Matrix loaded from " << fileName1 << ":" << std::endl;
+        mat1.print();
+
+        auto start = std::chrono::steady_clock::now();
+        
+        std::vector<double> result = mat1.gauss_jordan_elimination_threadlib(numThread);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Result vector:" << std::endl;
+        
+        for (double sol : result) {
+            std::cout << std::fixed << std::setprecision(6) << sol << ",";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+
+        writeVectorToFile(resultFileName2, result);
+
+        if (log) {
+            record.algorithm = "Gauss Elimination with ThreadLib";
             record.execution_date = date_str; // Example date, should be formatted according to your requirements
             record.execution_time = elapsed_time; // Example execution time
             record.N = mat1.getRowsCount(); // Example number of equations
