@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
             for (const auto& pair : algorithmMap) {
                 std::cout << pair.first << ". " << pair.second << std::endl;
             }
-            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num> <log_file>" << std::endl;
             return 1;
         }
 
@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
             for (const auto& pair : algorithmMap) {
                 std::cout << pair.first << ". " << pair.second << std::endl;
             }
-            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num>  <log_file>" << std::endl;
             return 1;
         }
 
@@ -311,7 +311,7 @@ int main(int argc, char *argv[]) {
             for (const auto& pair : algorithmMap) {
                 std::cout << pair.first << ". " << pair.second << std::endl;
             }
-            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num> <log_file>" << std::endl;
             return 1;
         }
 
@@ -361,7 +361,7 @@ int main(int argc, char *argv[]) {
             for (const auto& pair : algorithmMap) {
                 std::cout << pair.first << ". " << pair.second << std::endl;
             }
-            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <complete_pivoting> <thread_num> <log_file>" << std::endl;
             return 1;
         }
 
@@ -391,11 +391,11 @@ int main(int argc, char *argv[]) {
         writeVectorToFile(resultFileName2, result);
 
         if (log) {
-            record.algorithm = "Gauss Elimination with ThreadLib";
+            record.algorithm = "Gauss Jordan Elimination with ThreadLib";
             record.execution_date = date_str; // Example date, should be formatted according to your requirements
             record.execution_time = elapsed_time; // Example execution time
             record.N = mat1.getRowsCount(); // Example number of equations
-            record.full_pivoting = true; // Example full pivoting flag
+            record.full_pivoting = false; // Example full pivoting flag
             record.num_threads = numThread; // Example number of threads
 
             writeLogRecordToFile(record, logfile);
@@ -405,7 +405,7 @@ int main(int argc, char *argv[]) {
             for (const auto& pair : algorithmMap) {
                 std::cout << pair.first << ". " << pair.second << std::endl;
             }
-            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <thread_num>" << std::endl;
+            std::cerr << "Usage: " << argv[0] << " <matrix1_filename> <algorithm> <result_filename> <thread_num> <log_file>" << std::endl;
             return 1;
     }
 
