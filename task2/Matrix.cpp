@@ -28,6 +28,7 @@ public:
                 data[i][j] = static_cast<double>(rand()) / RAND_MAX;
             }
         }
+
     }
     Matrix(int numRows, int numCols, double value): rows(numRows), cols(numCols), data(numRows, std::vector<double>(numCols, value)) {}
     Matrix(const std::string& filePath){
@@ -52,6 +53,7 @@ public:
             for (int j = 0; j < cols; ++j) {
                 std::getline(iss, cell, ';');
                 data[i][j] = std::stod(cell);
+
             }
         }
 
