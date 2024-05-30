@@ -5,6 +5,8 @@
 #include <fstream>
 #include <vector>
 
+class BMP;
+
 class Drawable {
 public:
     virtual void draw(BMP &image) const = 0;
