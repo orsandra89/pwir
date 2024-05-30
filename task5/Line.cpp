@@ -53,8 +53,8 @@ public:
         double xIncrement = static_cast<double>(dx) / steps;
         double yIncrement = static_cast<double>(dy) / steps;
 
-        int segmentLength = steps / numThreads;
-        int remainder = steps % numThreads;
+        int segmentLength = steps / thread_num;
+        int remainder = steps % thread_num;
 
         struct ThreadData {
             BMP* image;
@@ -74,11 +74,11 @@ public:
             return nullptr;
         };
 
-        std::vector<pthread_t> threads(numThreads);
-        std::vector<ThreadData> threadData(numThreads);
+        std::vector<pthread_t> threads(thread_num);
+        std::vector<ThreadData> threadData(thread_num);
 
         int startStep = 0;
-        for (int i = 0; i < numThreads; ++i) {
+        for (int i = 0; i < thread_num; ++i) {
             int endStep = startStep + segmentLength - 1;
             if (i < remainder) {
                 endStep += 1;
@@ -88,7 +88,7 @@ public:
             startStep = endStep + 1;
         }
 
-        for (int i = 0; i < numThreads; ++i) {
+        for (int i = 0; i < thread_num; ++i) {
             pthread_join(threads[i], nullptr);
         }
     }
