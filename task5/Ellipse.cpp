@@ -106,97 +106,54 @@ public:
         }
     }
 
+    struct ThreadData {
+        BMP* image;
+        int xc, yc;
+        int r1, r2;
+        int start, end;
+        uint8_t r, g, b;
+    };
+
+    static void* threadFunc(void* arg) {
+        ThreadData* data = static_cast<ThreadData*>(arg);
+        int xc = data->xc;
+        int yc = data->yc;
+        int r1 = data->r1;
+        int r2 = data->r2;
+        uint8_t r = data->r;
+        uint8_t g = data->g;
+        uint8_t b = data->b;
+        BMP* image = data->image;
+
+        for (int angle = data->start; angle <= data->end; ++angle) {
+            double theta = angle * M_PI / 180.0;
+            int x = static_cast<int>(r1 * cos(theta));
+            int y = static_cast<int>(r2 * sin(theta));
+
+            image->setPixel(xc + x, yc + y, r, g, b);
+            image->setPixel(xc - x, yc + y, r, g, b);
+            image->setPixel(xc + x, yc - y, r, g, b);
+            image->setPixel(xc - x, yc - y, r, g, b);
+        }
+        return nullptr;
+    }
+
     void draw_threadlib(BMP &image, int thread_num) const override {
-        int r1_2 = r1 * r1;
-        int r2_2 = r2 * r2;
-
-        int segmentLength = r1 / thread_num;
-        int remainder = r1 % thread_num;
-
-        struct ThreadData {
-            BMP* image;
-            int xc, yc;
-            int r1_2, r2_2;
-            int start_x, end_x;
-            uint8_t r, g, b;
-        };
-
-        auto threadFunc = [](void* arg) -> void* {
-            ThreadData* data = static_cast<ThreadData*>(arg);
-            int x = data->start_x;
-            int y = data->r2_2 / data->r1_2;
-            int fa2 = 4 * data->r1_2, fb2 = 4 * data->r2_2;
-            int sigma = 2 * data->r2_2 + data->r1_2 * (1 - 2 * data->r2_2);
-
-            while (x <= data->end_x && data->r2_2 * x <= data->r1_2 * y) {
-                data->image->setPixel(data->xc + x, data->yc + y, data->r, data->g, data->b);
-                data->image->setPixel(data->xc - x, data->yc + y, data->r, data->g, data->b);
-                data->image->setPixel(data->xc + x, data->yc - y, data->r, data->g, data->b);
-                data->image->setPixel(data->xc - x, data->yc - y, data->r, data->g, data->b);
-
-                if (sigma >= 0) {
-                    sigma += fa2 * (1 - y);
-                    y--;
-                }
-                sigma += data->r2_2 * ((4 * x) + 6);
-                x++;
-            }
-            return nullptr;
-        };
+        int segmentLength = 360 / thread_num;
+        int remainder = 360 % thread_num;
 
         std::vector<pthread_t> threads(thread_num);
         std::vector<ThreadData> threadData(thread_num);
 
-        int start_x = 0;
+        int start = 0;
         for (int i = 0; i < thread_num; ++i) {
-            int end_x = start_x + segmentLength - 1;
+            int end = start + segmentLength - 1;
             if (i < remainder) {
-                end_x += 1;
+                end += 1;
             }
-            threadData[i] = { &image, xc, yc, r1_2, r2_2, start_x, end_x, r, g, b };
+            threadData[i] = { &image, xc, yc, r1, r2, start, end, r, g, b };
             pthread_create(&threads[i], nullptr, threadFunc, &threadData[i]);
-            start_x = end_x + 1;
-        }
-
-        for (int i = 0; i < thread_num; ++i) {
-            pthread_join(threads[i], nullptr);
-        }
-
-        segmentLength = r2 / thread_num;
-        remainder = r2 % thread_num;
-
-        auto threadFuncSecondHalf = [](void* arg) -> void* {
-            ThreadData* data = static_cast<ThreadData*>(arg);
-            int x = data->r1_2 / data->r2_2;
-            int y = data->start_x;
-            int fa2 = 4 * data->r1_2, fb2 = 4 * data->r2_2;
-            int sigma = 2 * data->r1_2 + data->r2_2 * (1 - 2 * x);
-
-            while (y <= data->end_x && data->r1_2 * y <= data->r2_2 * x) {
-                data->image->setPixel(data->xc + x, data->yc + y, data->r, data->g, data->b);
-                data->image->setPixel(data->xc - x, data->yc + y, data->r, data->g, data->b);
-                data->image->setPixel(data->xc + x, data->yc - y, data->r, data->g, data->b);
-                data->image->setPixel(data->xc - x, data->yc - y, data->r, data->g, data->b);
-
-                if (sigma >= 0) {
-                    sigma += fb2 * (1 - x);
-                    x--;
-                }
-                sigma += data->r1_2 * ((4 * y) + 6);
-                y++;
-            }
-            return nullptr;
-        };
-
-        start_x = 0;
-        for (int i = 0; i < thread_num; ++i) {
-            int end_x = start_x + segmentLength - 1;
-            if (i < remainder) {
-                end_x += 1;
-            }
-            threadData[i] = { &image, xc, yc, r1_2, r2_2, start_x, end_x, r, g, b };
-            pthread_create(&threads[i], nullptr, threadFuncSecondHalf, &threadData[i]);
-            start_x = end_x + 1;
+            start = end + 1;
         }
 
         for (int i = 0; i < thread_num; ++i) {
