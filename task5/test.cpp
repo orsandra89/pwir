@@ -84,6 +84,30 @@ int main(int argc, char *argv[]) {
 
         std::cout << "Image saved to file:  " << output_file_path << std::endl;
 
+    } else if (algorithm == 1){
+        int thread_num;
+        if (argc == 5){
+            input_file_path = argv[2];
+            output_file_path = argv[3];
+            thread_num = std::stoi(argv[4]);
+
+            std::cout << "Load lines from " << input_file_path << ":" << std::endl;
+            drawables = loadDrawableLinesFromFile(input_file_path);
+        }
+
+        auto start = std::chrono::steady_clock::now();
+        
+        image.drawAllOpenMP(drawables, thread_num);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+
+        image.save(output_file_path);
+
+        std::cout << "Image saved to file:  " << output_file_path << std::endl;
+
     } else {
         std::cerr << "Wrong algorithm selected: " << algorithm << std::endl;
         std::cout << "Available draw algorithms:" << std::endl;
