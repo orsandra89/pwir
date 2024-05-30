@@ -37,7 +37,7 @@ public:
         double xIncrement = static_cast<double>(dx) / steps;
         double yIncrement = static_cast<double>(dy) / steps;
 
-        #pragma omp parallel for num_threads(numThread)
+        #pragma omp parallel for num_threads(thread_num)
         for (int i = 0; i <= steps; ++i) {
             double x = x0 + i * xIncrement;
             double y = y0 + i * yIncrement;
