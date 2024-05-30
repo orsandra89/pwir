@@ -43,43 +43,52 @@ public:
         int dy = std::abs(y1 - y0);
         int sx = (x0 < x1) ? 1 : -1;
         int sy = (y0 < y1) ? 1 : -1;
-        int err = dx - dy;
-
-        int x = x0;
-        int y = y0;
 
         int num_segments = thread_num; // Define the number of segments
-        int segment_length = (std::max(dx, dy) + num_segments - 1) / num_segments; // Calculate length of each segment
+        int segment_length_x = (dx + num_segments - 1) / num_segments; // Calculate length of each segment in x direction
+        int segment_length_y = (dy + num_segments - 1) / num_segments; // Calculate length of each segment in y direction
 
-        #pragma omp parallel for num_threads(thread_num)
+        #pragma omp parallel for
         for (int segment = 0; segment < num_segments; ++segment) {
-            int segment_start = segment * segment_length;
-            int segment_end = std::min((segment + 1) * segment_length, std::max(dx, dy));
+            // Calculate starting point for the segment
+            double ratio_x = static_cast<double>(segment * segment_length_x) / dx;
+            double ratio_y = static_cast<double>(segment * segment_length_y) / dy;
+            double local_x0 = x0 + ratio_x * (x1 - x0);
+            double local_y0 = y0 + ratio_y * (y1 - y0);
 
-            int local_x = x;
-            int local_y = y;
-            int local_err = err;
+            // Calculate ending point for the segment
+            double ratio_x1 = static_cast<double>((segment + 1) * segment_length_x) / dx;
+            double ratio_y1 = static_cast<double>((segment + 1) * segment_length_y) / dy;
+            double local_x1 = x0 + ratio_x1 * (x1 - x0);
+            double local_y1 = y0 + ratio_y1 * (y1 - y0);
 
-            for (int i = segment_start; i < segment_end; ++i) {
+            // Ensure local_x and local_y are integers for pixel positions
+            int lx0 = static_cast<int>(round(local_x0));
+            int ly0 = static_cast<int>(round(local_y0));
+            int lx1 = static_cast<int>(round(local_x1));
+            int ly1 = static_cast<int>(round(local_y1));
+
+            // Calculate local error
+            int local_dx = std::abs(lx1 - lx0);
+            int local_dy = std::abs(ly1 - ly0);
+            int local_err = local_dx - local_dy;
+
+            int local_x = lx0;
+            int local_y = ly0;
+
+            // Draw the segment
+            while (true) {
                 image.setPixel(local_x, local_y, r, g, b);
+                if (local_x == lx1 && local_y == ly1) break;
                 int e2 = 2 * local_err;
-                if (e2 > -dy) {
-                    local_err -= dy;
+                if (e2 > -local_dy) {
+                    local_err -= local_dy;
                     local_x += sx;
                 }
-                if (e2 < dx) {
-                    local_err += dx;
+                if (e2 < local_dx) {
+                    local_err += local_dx;
                     local_y += sy;
                 }
-            }
-
-            // Synchronize starting points for next segment
-            #pragma omp critical
-            {
-                if (local_x == x1 && local_y == y1) break;
-                x = local_x;
-                y = local_y;
-                err = local_err;
             }
         }
     }
