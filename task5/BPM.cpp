@@ -11,6 +11,7 @@ class Drawable {
 public:
     virtual void draw(BMP &image) const = 0;
     virtual void draw_openmp(BMP &image, int thread_num) const = 0;
+    virtual void draw_threadlib(BMP &image, int thread_num) const = 0;
     virtual ~Drawable() = default;
 };
 
@@ -79,6 +80,12 @@ public:
     }
 
     void drawAllOpenMP(const std::vector<std::shared_ptr<Drawable>> &drawables, int thread_num) {
+        for (const auto &drawable : drawables) {
+            drawable->draw_openmp(*this, thread_num);
+        }
+    }
+
+    void drawAllThreadLib(const std::vector<std::shared_ptr<Drawable>> &drawables, int thread_num) {
         for (const auto &drawable : drawables) {
             drawable->draw_openmp(*this, thread_num);
         }
