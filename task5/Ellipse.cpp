@@ -59,59 +59,50 @@ public:
         int r1_2 = r1 * r1;
         int r2_2 = r2 * r2;
 
-        auto draw_half_ellipse = [&](int start_x, int end_x) {
-            int x = start_x;
-            int y = r2;
-            int fa2 = 4 * r1_2, fb2 = 4 * r2_2;
-            int sigma = 2 * r2_2 + r1_2 * (1 - 2 * r2);
+        #pragma omp parallel sections num_threads(thread_num)
+        {
+            #pragma omp section
+            {
+                int x = 0;
+                int y = r2;
+                int fa2 = 4 * r1_2, fb2 = 4 * r2_2;
+                int sigma = 2 * r2_2 + r1_2 * (1 - 2 * r2);
 
-            while (x <= end_x && r2_2 * x <= r1_2 * y) {
-                image.setPixel(xc + x, yc + y, r, g, b);
-                image.setPixel(xc - x, yc + y, r, g, b);
-                image.setPixel(xc + x, yc - y, r, g, b);
-                image.setPixel(xc - x, yc - y, r, g, b);
+                while (r2_2 * x <= r1_2 * y) {
+                    image.setPixel(xc + x, yc + y, r, g, b);
+                    image.setPixel(xc - x, yc + y, r, g, b);
+                    image.setPixel(xc + x, yc - y, r, g, b);
+                    image.setPixel(xc - x, yc - y, r, g, b);
 
-                if (sigma >= 0) {
-                    sigma += fa2 * (1 - y);
-                    y--;
+                    if (sigma >= 0) {
+                        sigma += fa2 * (1 - y);
+                        y--;
+                    }
+                    sigma += r2_2 * ((4 * x) + 6);
+                    x++;
                 }
-                sigma += r2_2 * ((4 * x) + 6);
-                x++;
             }
-        };
 
-        #pragma omp parallel for num_threads(thread_num)
-        for (int i = 0; i < thread_num; ++i) {
-            int start_x = i * r1 / thread_num;
-            int end_x = (i + 1) * r1 / thread_num;
-            draw_half_ellipse(start_x, end_x);
-        }
+            #pragma omp section
+            {
+                int x = r1;
+                int y = 0;
+                int sigma = 2 * r1_2 + r2_2 * (1 - 2 * r1);
 
-        auto draw_second_half = [&](int start_y, int end_y) {
-            int x = r1;
-            int y = start_y;
-            int sigma = 2 * r1_2 + r2_2 * (1 - 2 * r1);
+                while (r1_2 * y <= r2_2 * x) {
+                    image.setPixel(xc + x, yc + y, r, g, b);
+                    image.setPixel(xc - x, yc + y, r, g, b);
+                    image.setPixel(xc + x, yc - y, r, g, b);
+                    image.setPixel(xc - x, yc - y, r, g, b);
 
-            while (y <= end_y && r1_2 * y <= r2_2 * x) {
-                image.setPixel(xc + x, yc + y, r, g, b);
-                image.setPixel(xc - x, yc + y, r, g, b);
-                image.setPixel(xc + x, yc - y, r, g, b);
-                image.setPixel(xc - x, yc - y, r, g, b);
-
-                if (sigma >= 0) {
-                    sigma += fb2 * (1 - x);
-                    x--;
+                    if (sigma >= 0) {
+                        sigma += 4 * r2_2 * (1 - x);
+                        x--;
+                    }
+                    sigma += r1_2 * ((4 * y) + 6);
+                    y++;
                 }
-                sigma += r1_2 * ((4 * y) + 6);
-                y++;
             }
-        };
-
-        #pragma omp parallel for num_threads(thread_num)
-        for (int i = 0; i < thread_num; ++i) {
-            int start_y = i * r2 / thread_num;
-            int end_y = (i + 1) * r2 / thread_num;
-            draw_second_half(start_y, end_y);
         }
     }
 
