@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include <pthread.h>
-#include "BPM.cpp"
+#include "BMP.cpp"
 
 class Line : public Drawable {
 private:

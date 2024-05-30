@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "BPM.cpp"
+#include "BMP.cpp"
 #include "Line.cpp"
 #include "Ellipse.cpp"
 

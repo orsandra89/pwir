@@ -4,7 +4,7 @@ CFLAGS = -std=c++17 -Wunused-command-line-argument -Xpreprocessor -fopenmp -I/op
 CCMPI = mpic++
 CCMPIFLAGS = -std=c++17 -Wunused-command-line-argument
 
-SRCS = BPM.cpp Line.cpp
+SRCS = BMP.cpp Line.cpp
 TESTSRCS = test.cpp
 # TIMECALCULATIONSRCS = calculate_time.cpp
 

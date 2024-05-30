@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include <pthread.h>
-#include "BMP.h"
+#include "BMP.cpp"
 
 class Ellipse : public Drawable {
 private:
@@ -90,6 +90,7 @@ public:
         auto draw_second_half = [&](int start_y, int end_y) {
             int x = r1;
             int y = start_y;
+            int fb2 = 4 * r2_2;
             int sigma = 2 * r1_2 + r2_2 * (1 - 2 * r1);
 
             while (y <= end_y && r1_2 * y <= r2_2 * x) {
@@ -178,6 +179,7 @@ public:
             ThreadData* data = static_cast<ThreadData*>(arg);
             int x = data->r1_2 / data->r2_2;
             int y = data->start_x;
+            int fa2 = 4 * data->r1_2, fb2 = 4 * data->r2_2;
             int sigma = 2 * data->r1_2 + data->r2_2 * (1 - 2 * x);
 
             while (y <= data->end_x && data->r1_2 * y <= data->r2_2 * x) {
