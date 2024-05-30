@@ -9,6 +9,7 @@
 
 #include "BPM.cpp"
 #include "Line.cpp"
+#include "Ellipse.cpp"
 
 
 std::vector<std::shared_ptr<Drawable>> loadDrawableLinesFromFile(const std::string &filename) {
@@ -26,6 +27,27 @@ std::vector<std::shared_ptr<Drawable>> loadDrawableLinesFromFile(const std::stri
         int x0, y0, x1, y1;
         if (ss >> x0 >> y0 >> x1 >> y1) {
             drawables.push_back(std::make_shared<Line>(x0, y0, x1, y1, 0, 0, 0));
+        }
+    }
+
+    return drawables;
+}
+
+std::vector<std::shared_ptr<Drawable>> loadDrawableEllipsesFromFile(const std::string &filename) {
+    std::vector<std::shared_ptr<Drawable>> drawables;
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+        return drawables;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream ss(line);
+        int x0, y0, r0, r1;
+        if (ss >> x0 >> y0 >> r0 >> r1) {
+            drawables.push_back(std::make_shared<Ellipse>(x0, y0, r0, r1, 0, 0, 0));
         }
     }
 
@@ -69,6 +91,13 @@ int main(int argc, char *argv[]) {
 
             std::cout << "Load lines from " << input_file_path << ":" << std::endl;
             drawables = loadDrawableLinesFromFile(input_file_path);
+        } else {
+            std::cout << "Available draw algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <algorithm> <input_file> <result_filename>" << std::endl;
+            return 1;
         }
 
         auto start = std::chrono::steady_clock::now();
@@ -93,6 +122,13 @@ int main(int argc, char *argv[]) {
 
             std::cout << "Load lines from " << input_file_path << ":" << std::endl;
             drawables = loadDrawableLinesFromFile(input_file_path);
+        } else {
+            std::cout << "Available draw algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <algorithm> <input_file> <result_filename> <thread_num>" << std::endl;
+            return 1;
         }
 
         auto start = std::chrono::steady_clock::now();
@@ -117,6 +153,104 @@ int main(int argc, char *argv[]) {
 
             std::cout << "Load lines from " << input_file_path << ":" << std::endl;
             drawables = loadDrawableLinesFromFile(input_file_path);
+        } else {
+            std::cout << "Available draw algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <algorithm> <input_file> <result_filename> <thread_num>" << std::endl;
+            return 1;
+        }
+
+        auto start = std::chrono::steady_clock::now();
+        
+        image.drawAllThreadLib(drawables, thread_num);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+
+        image.save(output_file_path);
+
+        std::cout << "Image saved to file:  " << output_file_path << std::endl;
+
+    } else if (algorithm == 3){
+        if (argc == 4){
+            input_file_path = argv[2];
+            output_file_path = argv[3];
+
+            std::cout << "Load lines from " << input_file_path << ":" << std::endl;
+            drawables = loadDrawableEllipsesFromFile(input_file_path);
+        } else {
+            std::cout << "Available draw algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <algorithm> <input_file> <result_filename>" << std::endl;
+            return 1;
+        }
+
+        auto start = std::chrono::steady_clock::now();
+        
+        image.drawAll(drawables);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+
+        image.save(output_file_path);
+
+        std::cout << "Image saved to file:  " << output_file_path << std::endl;
+
+    } else if (algorithm == 4){
+        int thread_num;
+        if (argc == 5){
+            input_file_path = argv[2];
+            output_file_path = argv[3];
+            thread_num = std::stoi(argv[4]);
+
+            std::cout << "Load lines from " << input_file_path << ":" << std::endl;
+            drawables = loadDrawableEllipsesFromFile(input_file_path);
+        } else {
+            std::cout << "Available draw algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <algorithm> <input_file> <result_filename> <thread_num>" << std::endl;
+            return 1;
+        }
+
+        auto start = std::chrono::steady_clock::now();
+        
+        image.drawAllOpenMP(drawables, thread_num);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = std::chrono::duration<double>(end - start).count();
+
+        std::cout << "Calculation time: " << elapsed_time << std::endl;
+
+        image.save(output_file_path);
+
+        std::cout << "Image saved to file:  " << output_file_path << std::endl;
+
+    } else if (algorithm == 5){
+        int thread_num;
+        if (argc == 5){
+            input_file_path = argv[2];
+            output_file_path = argv[3];
+            thread_num = std::stoi(argv[4]);
+
+            std::cout << "Load lines from " << input_file_path << ":" << std::endl;
+            drawables = loadDrawableEllipsesFromFile(input_file_path);
+        } else {
+            std::cout << "Available draw algorithms:" << std::endl;
+            for (const auto& pair : algorithmMap) {
+                std::cout << pair.first << ". " << pair.second << std::endl;
+            }
+            std::cerr << "Usage: " << argv[0] << " <algorithm> <input_file> <result_filename> <thread_num>" << std::endl;
+            return 1;
         }
 
         auto start = std::chrono::steady_clock::now();
